@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#07111f">
+
 <title>IQ Signal Engine</title>
 
 <style>
@@ -20,324 +21,1635 @@ body {
     min-height: 100vh;
 }
 
-button, select {
-    font: inherit;
+.app {
+    max-width: 1100px;
+    margin: auto;
+    padding: 16px;
 }
+
+/* HEADER */
 
 .header {
     background: #081525;
-    border-bottom: 1px solid #1b2b40;
-    padding: 16px;
-    position: sticky;
-    top: 0;
-    z-index: 10;
+    border: 1px solid #1e3148;
+    border-radius: 16px;
+    padding: 18px;
+    margin-bottom: 14px;
 }
 
-.header-inner {
-    max-width: 1100px;
-    margin: auto;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
+.brand {
+    font-size: 24px;
+    font-weight: 800;
 }
 
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+.sub {
+    color: #8ea1b8;
+    font-size: 13px;
+    margin-top: 5px;
 }
 
-.logo-icon {
-    width: 42px;
-    height: 42px;
-    border-radius: 12px;
-    background: #16a36a;
-    display: grid;
-    place-items: center;
-    font-weight: bold;
-    color: white;
-}
-
-.logo h1 {
-    font-size: 19px;
-}
-
-.logo p {
-    color: #8291a5;
-    font-size: 11px;
-    margin-top: 3px;
-}
-
-.status {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 12px;
-    color: #6fe2aa;
-}
-
-.status-dot {
-    width: 8px;
-    height: 8px;
-    background: #26d980;
-    border-radius: 50%;
-    box-shadow: 0 0 10px #26d980;
-}
-
-.container {
-    width: 100%;
-    max-width: 1100px;
-    margin: auto;
-    padding: 16px;
-}
+/* CONTROLS */
 
 .controls {
     display: grid;
     grid-template-columns: 1fr 1fr auto;
     gap: 10px;
-    margin-bottom: 15px;
+    margin-bottom: 14px;
 }
 
-.control-box {
-    background: #0a1625;
-    border: 1px solid #1c3048;
-    border-radius: 10px;
+.control {
+    background: #0b1727;
+    border: 1px solid #21354d;
+    border-radius: 12px;
     padding: 10px;
 }
 
-.control-box label {
+.control label {
     display: block;
-    color: #75859a;
-    font-size: 10px;
-    text-transform: uppercase;
+    color: #8ea1b8;
+    font-size: 11px;
     margin-bottom: 5px;
+    text-transform: uppercase;
 }
 
-select {
+.control select,
+.control button {
     width: 100%;
-    background: transparent;
-    color: white;
-    border: 0;
-    outline: none;
+    background: #101f32;
+    color: #fff;
+    border: 1px solid #2a425d;
+    border-radius: 8px;
+    padding: 11px;
 }
 
-select option {
-    background: #0a1625;
-}
-
-.analyze-btn {
-    border: 0;
-    border-radius: 10px;
-    background: #16885c;
-    color: white;
-    font-weight: bold;
-    padding: 0 18px;
+.control button {
     cursor: pointer;
+    font-weight: 700;
 }
 
-.analyze-btn:active {
-    transform: scale(.97);
+/* SIGNAL CARDS */
+
+.signal {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
 }
+
+.card {
+    background: #0b1727;
+    border: 1px solid #21354d;
+    border-radius: 14px;
+    padding: 15px;
+}
+
+.signal-main {
+    min-height: 125px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.signal-label {
+    font-size: 11px;
+    color: #8ea1b8;
+    text-transform: uppercase;
+}
+
+.signal-value {
+    font-size: 34px;
+    font-weight: 900;
+    margin-top: 6px;
+}
+
+.call {
+    color: #2edb87;
+}
+
+.put {
+    color: #ff5b6c;
+}
+
+.wait {
+    color: #efc65b;
+}
+
+.metric {
+    font-size: 25px;
+    font-weight: 800;
+    margin-top: 8px;
+}
+
+.metric small {
+    font-size: 11px;
+    color: #8ea1b8;
+    font-weight: 400;
+}
+
+/* CHART */
 
 .chart-card {
-    background: #081321;
-    border: 1px solid #1b2d43;
-    border-radius: 14px;
-    overflow: hidden;
+    background: #081525;
+    border: 1px solid #1e3148;
+    border-radius: 16px;
+    padding: 12px;
+    margin-bottom: 14px;
 }
 
-.chart-top {
+.chart-head {
     display: flex;
     justify-content: space-between;
+    gap: 8px;
     align-items: center;
-    padding: 13px 15px;
-    border-bottom: 1px solid #17283c;
+    margin-bottom: 10px;
 }
 
-.asset {
-    font-weight: bold;
+.chart-title {
+    font-weight: 800;
 }
 
 .price {
-    color: #91a1b5;
+    color: #9eb0c4;
     font-size: 13px;
-    margin-left: 8px;
-}
-
-.candle-timer {
-    font-size: 12px;
-    color: #72dbaa;
 }
 
 .chart-wrap {
     height: 330px;
-    width: 100%;
     position: relative;
 }
 
-canvas {
+.chart-wrap canvas {
     width: 100%;
     height: 100%;
     display: block;
+    background: #06101c;
+    border-radius: 10px;
 }
 
-.signal-card {
-    margin-top: 15px;
-    border-radius: 15px;
-    background: #0a1625;
-    border: 1px solid #1b3048;
-    padding: 18px;
-    text-align: center;
+/* HISTORY */
+
+.section-title {
+    font-weight: 800;
+    margin: 18px 0 10px;
 }
 
-.signal-label {
-    color: #8392a5;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-}
-
-.signal {
-    font-size: 42px;
-    font-weight: 900;
-    margin: 7px 0;
-}
-
-.signal.call {
-    color: #28d982;
-}
-
-.signal.put {
-    color: #ff5367;
-}
-
-.signal.wait {
-    color: #f0c75e;
-}
-
-.confidence {
-    color: #aab7c7;
-    font-size: 13px;
-}
-
-.confidence strong {
-    color: white;
-}
-
-.signal-reason {
-    margin-top: 9px;
-    color: #77899e;
-    font-size: 12px;
-}
-
-.grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    margin-top: 15px;
-}
-
-.metric {
-    background: #091625;
-    border: 1px solid #1a2c42;
-    border-radius: 12px;
-    padding: 13px;
-}
-
-.metric-title {
-    color: #718298;
-    font-size: 10px;
-    text-transform: uppercase;
-}
-
-.metric-value {
-    margin-top: 8px;
-    font-size: 19px;
-    font-weight: bold;
-}
-
-.metric-value.green {
-    color: #2edb87;
-}
-
-.metric-value.red {
-    color: #ff5b6c;
-}
-
-.metric-value.yellow {
-    color: #efc65b;
-}
-
-.section {
-    margin-top: 15px;
-    background: #081321;
-    border: 1px solid #1b2d43;
+.history {
+    background: #081525;
+    border: 1px solid #1e3148;
     border-radius: 14px;
     overflow: hidden;
 }
 
-.section-title {
-    padding: 14px;
-    font-weight: bold;
-    border-bottom: 1px solid #17283c;
-}
-
-.analysis-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 13px 14px;
-    border-bottom: 1px solid #122235;
-    font-size: 13px;
-}
-
-.analysis-row:last-child {
-    border-bottom: 0;
-}
-
-.analysis-name {
-    color: #8493a6;
-}
-
-.analysis-value {
-    font-weight: bold;
-}
-
-.history {
-    max-height: 260px;
-    overflow-y: auto;
-}
-
 .history-row {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 10px;
-    padding: 12px 14px;
-    border-bottom: 1px solid #122235;
-    font-size: 12px;
+    grid-template-columns: 1.2fr .8fr .8fr .8fr;
+    padding: 12px;
+    border-bottom: 1px solid #1c2b3d;
+    font-size: 13px;
 }
 
 .history-row:last-child {
     border-bottom: 0;
 }
 
+.history-head {
+    color: #8ea1b8;
+    font-size: 11px;
+    text-transform: uppercase;
+}
+
 .history-call {
     color: #2edb87;
-    font-weight: bold;
+    font-weight: 700;
 }
 
 .history-put {
     color: #ff5b6c;
-    font-weight: bold;
+    font-weight: 700;
 }
 
 .history-wait {
     color: #efc65b;
-    font-weight: bold;
+    font-weight: 700;
 }
+
+/* OTHER */
 
 .disclaimer {
     margin-top: 15px;
     padding: 12px;
     border: 1px solid #28364a;
-    border-radius: 10
+    border-radius: 10px;
+    color: #8293a7;
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+.status {
+    margin-top: 10px;
+    color: #6f839a;
+    font-size: 11px;
+}
+
+.footer {
+    text-align: center;
+    color: #52657b;
+    font-size: 11px;
+    padding: 18px 0;
+}
+
+.badge {
+    display: inline-block;
+    padding: 4px 7px;
+    border-radius: 99px;
+    background: #11253b;
+    color: #8fb5df;
+    font-size: 10px;
+    margin-left: 5px;
+}
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+
+    .controls {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .controls .control:last-child {
+        grid-column: 1 / -1;
+    }
+
+    .signal {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .signal-main {
+        grid-column: 1 / -1;
+    }
+
+    .chart-wrap {
+        height: 280px;
+    }
+
+    .history-row {
+        grid-template-columns: 1.1fr .8fr .8fr .7fr;
+        font-size: 12px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- HEADER -->
+
+    <header class="header">
+
+        <div class="brand">
+            IQ Signal Engine
+            <span class="badge">V1</span>
+        </div>
+
+        <div class="sub">
+            Technical signal dashboard using simulated candle data
+        </div>
+
+    </header>
+
+
+    <!-- CONTROLS -->
+
+    <section class="controls">
+
+        <div class="control">
+
+            <label>Asset</label>
+
+            <select id="asset">
+
+                <option>EUR/USD</option>
+                <option>GBP/USD</option>
+                <option>USD/JPY</option>
+                <option>BTC/USD</option>
+                <option>ETH/USD</option>
+
+            </select>
+
+        </div>
+
+
+        <div class="control">
+
+            <label>Timeframe</label>
+
+            <select id="timeframe">
+
+                <option value="1m">1 Minute</option>
+                <option value="5m">5 Minutes</option>
+                <option value="15m">15 Minutes</option>
+                <option value="1h">1 Hour</option>
+
+            </select>
+
+        </div>
+
+
+        <div class="control">
+
+            <label>Engine</label>
+
+            <button id="refresh">
+                Generate New Analysis
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- SIGNAL AREA -->
+
+    <section class="signal">
+
+        <div class="card signal-main">
+
+            <div class="signal-label">
+                Current Signal
+            </div>
+
+            <div id="signal" class="signal-value wait">
+                WAIT
+            </div>
+
+            <div id="confidence" class="sub">
+                Confidence: --
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="signal-label">
+                RSI (14)
+            </div>
+
+            <div id="rsi" class="metric">
+                --
+            </div>
+
+            <div id="rsiState" class="sub">
+                Neutral
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="signal-label">
+                EMA 9 / 21
+            </div>
+
+            <div id="ema" class="metric">
+                --
+            </div>
+
+            <div id="trend" class="sub">
+                Trend: --
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="signal-label">
+                Momentum
+            </div>
+
+            <div id="momentum" class="metric">
+                --
+            </div>
+
+            <div id="momentumState" class="sub">
+                --
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CHART -->
+
+    <section class="chart-card">
+
+        <div class="chart-head">
+
+            <div class="chart-title">
+
+                Price Action
+
+                <span class="badge" id="assetLabel">
+                    EUR/USD
+                </span>
+
+            </div>
+
+            <div class="price" id="price">
+                Price: --
+            </div>
+
+        </div>
+
+
+        <div class="chart-wrap">
+
+            <canvas id="chart"></canvas>
+
+        </div>
+
+
+        <div class="status" id="status">
+            Ready.
+        </div>
+
+    </section>
+
+
+    <!-- HISTORY -->
+
+    <h3 class="section-title">
+        Signal History
+    </h3>
+
+
+    <section class="history">
+
+        <div class="history-row history-head">
+
+            <div>Time</div>
+            <div>Signal</div>
+            <div>RSI</div>
+            <div>Score</div>
+
+        </div>
+
+
+        <div id="historyRows"></div>
+
+    </section>
+
+
+    <!-- DISCLAIMER -->
+
+    <div class="disclaimer">
+
+        <strong>Demo mode:</strong>
+
+        This V1 uses locally generated simulated candle data.
+        It is not connected to a live broker or market feed.
+
+        Signals are technical estimates, not guaranteed outcomes
+        or financial advice.
+
+    </div>
+
+
+    <div class="footer">
+
+        IQ Signal Engine • V1
+
+    </div>
+
+</div>
+
+
+<script>
+
+(function () {
+
+    "use strict";
+
+
+    /* =========================
+       ELEMENTS
+    ========================= */
+
+    const $ = function (id) {
+        return document.getElementById(id);
+    };
+
+
+    const asset = $("asset");
+    const timeframe = $("timeframe");
+    const refresh = $("refresh");
+    const canvas = $("chart");
+    const ctx = canvas.getContext("2d");
+
+
+    let candles = [];
+    let history = [];
+
+
+    /* =========================
+       RANDOM NUMBER
+    ========================= */
+
+    function rand(min, max) {
+
+        return min + Math.random() * (max - min);
+
+    }
+
+
+    /* =========================
+       GENERATE DEMO CANDLES
+    ========================= */
+
+    function generateCandles() {
+
+        const basePrices = {
+
+            "EUR/USD": 1.0860,
+
+            "GBP/USD": 1.2740,
+
+            "USD/JPY": 149.20,
+
+            "BTC/USD": 64000,
+
+            "ETH/USD": 3150
+
+        };
+
+
+        const base =
+            basePrices[asset.value] || 1;
+
+
+        let price = base;
+
+        let drift =
+            rand(-0.00025, 0.00025)
+            *
+            (base < 10 ? 1 : base / 1000);
+
+
+        candles = [];
+
+
+        for (let i = 0; i < 70; i++) {
+
+            drift +=
+                (Math.random() - 0.5)
+                *
+                (base < 10
+                    ? 0.00004
+                    : base / 300000);
+
+
+            drift *= 0.94;
+
+
+            const open = price;
+
+
+            const movement =
+                drift
+                +
+                (Math.random() - 0.5)
+                *
+                (base < 10
+                    ? 0.0010
+                    : base / 12000);
+
+
+            const close =
+                Math.max(
+                    0.0001,
+                    open + movement
+                );
+
+
+            const high =
+                Math.max(open, close)
+                +
+                Math.random()
+                *
+                (base < 10
+                    ? 0.0005
+                    : base / 30000);
+
+
+            const low =
+                Math.max(
+                    0.00001,
+                    Math.min(open, close)
+                    -
+                    Math.random()
+                    *
+                    (base < 10
+                        ? 0.0005
+                        : base / 30000)
+                );
+
+
+            candles.push({
+
+                o: open,
+                h: high,
+                l: low,
+                c: close
+
+            });
+
+
+            price = close;
+
+        }
+
+    }
+
+
+    /* =========================
+       EMA
+    ========================= */
+
+    function calculateEMA(period) {
+
+        const multiplier =
+            2 / (period + 1);
+
+
+        let ema =
+            candles[0].c;
+
+
+        for (
+            let i = 1;
+            i < candles.length;
+            i++
+        ) {
+
+            ema =
+                candles[i].c
+                * multiplier
+                +
+                ema
+                * (1 - multiplier);
+
+        }
+
+
+        return ema;
+
+    }
+
+
+    /* =========================
+       RSI
+    ========================= */
+
+    function calculateRSI(period) {
+
+        if (candles.length <= period) {
+
+            return 50;
+
+        }
+
+
+        let gain = 0;
+        let loss = 0;
+
+
+        for (
+            let i = candles.length - period;
+            i < candles.length;
+            i++
+        ) {
+
+            const difference =
+                candles[i].c
+                -
+                candles[i - 1].c;
+
+
+            if (difference >= 0) {
+
+                gain += difference;
+
+            } else {
+
+                loss -= difference;
+
+            }
+
+        }
+
+
+        if (loss === 0) {
+
+            return 100;
+
+        }
+
+
+        const averageGain =
+            gain / period;
+
+
+        const averageLoss =
+            loss / period;
+
+
+        const relativeStrength =
+            averageGain / averageLoss;
+
+
+        return 100 -
+            (
+                100 /
+                (1 + relativeStrength)
+            );
+
+    }
+
+
+    /* =========================
+       DECIMAL PLACES
+    ========================= */
+
+    function decimalPlaces() {
+
+        if (asset.value === "BTC/USD") {
+
+            return 2;
+
+        }
+
+
+        if (asset.value === "ETH/USD") {
+
+            return 2;
+
+        }
+
+
+        if (asset.value === "USD/JPY") {
+
+            return 3;
+
+        }
+
+
+        return 5;
+
+    }
+
+
+    /* =========================
+       ANALYZE MARKET
+    ========================= */
+
+    function analyze() {
+
+        const ema9 =
+            calculateEMA(9);
+
+
+        const ema21 =
+            calculateEMA(21);
+
+
+        const rsi =
+            calculateRSI(14);
+
+
+        const last =
+            candles[candles.length - 1].c;
+
+
+        const previous =
+            candles[candles.length - 6].c;
+
+
+        const momentum =
+            ((last - previous) / previous)
+            * 100;
+
+
+        let score = 0;
+
+
+        /*
+           EMA TREND
+        */
+
+        if (ema9 > ema21) {
+
+            score += 2;
+
+        }
+
+        else if (ema9 < ema21) {
+
+            score -= 2;
+
+        }
+
+
+        /*
+           RSI
+        */
+
+        if (rsi > 55 && rsi < 72) {
+
+            score += 1;
+
+        }
+
+        else if (rsi < 45 && rsi > 28) {
+
+            score -= 1;
+
+        }
+
+
+        /*
+           MOMENTUM
+        */
+
+        if (momentum > 0) {
+
+            score += 1;
+
+        }
+
+        else if (momentum < 0) {
+
+            score -= 1;
+
+        }
+
+
+        /*
+           FINAL SIGNAL
+        */
+
+        let signal = "WAIT";
+
+
+        if (score >= 3) {
+
+            signal = "CALL";
+
+        }
+
+        else if (score <= -3) {
+
+            signal = "PUT";
+
+        }
+
+
+        /*
+           CONFIDENCE
+        */
+
+        const confidence =
+            Math.min(
+                96,
+                52
+                +
+                Math.abs(score) * 11
+                +
+                Math.round(
+                    Math.min(
+                        8,
+                        Math.abs(momentum) * 100
+                    )
+                )
+            );
+
+
+        /*
+           DISPLAY SIGNAL
+        */
+
+        const signalElement =
+            $("signal");
+
+
+        signalElement.textContent =
+            signal;
+
+
+        signalElement.className =
+            "signal-value "
+            +
+            signal.toLowerCase();
+
+
+        $("confidence").textContent =
+            "Confidence: "
+            +
+            confidence
+            +
+            "%";
+
+
+        /*
+           RSI DISPLAY
+        */
+
+        $("rsi").textContent =
+            rsi.toFixed(1);
+
+
+        let rsiState =
+            "Neutral";
+
+
+        if (rsi >= 70) {
+
+            rsiState = "Overbought";
+
+        }
+
+        else if (rsi <= 30) {
+
+            rsiState = "Oversold";
+
+        }
+
+        else if (rsi >= 55) {
+
+            rsiState = "Bullish zone";
+
+        }
+
+        else if (rsi <= 45) {
+
+            rsiState = "Bearish zone";
+
+        }
+
+
+        $("rsiState").textContent =
+            rsiState;
+
+
+        /*
+           EMA DISPLAY
+        */
+
+        $("ema").textContent =
+            ema9.toFixed(
+                decimalPlaces()
+            );
+
+
+        $("trend").textContent =
+            "Trend: "
+            +
+            (
+                ema9 > ema21
+                    ? "Bullish"
+                    : "Bearish"
+            );
+
+
+        /*
+           MOMENTUM
+        */
+
+        $("momentum").textContent =
+            (
+                momentum >= 0
+                    ? "+"
+                    : ""
+            )
+            +
+            momentum.toFixed(3)
+            +
+            "%";
+
+
+        $("momentumState").textContent =
+            momentum > 0
+                ? "Positive"
+                : "Negative";
+
+
+        /*
+           PRICE
+        */
+
+        $("price").textContent =
+            "Price: "
+            +
+            last.toFixed(
+                decimalPlaces()
+            );
+
+
+        $("assetLabel").textContent =
+            asset.value;
+
+
+        /*
+           HISTORY
+        */
+
+        addHistory(
+            signal,
+            rsi,
+            confidence
+        );
+
+
+        /*
+           DRAW CHART
+        */
+
+        drawChart();
+
+    }
+
+
+    /* =========================
+       ADD HISTORY
+    ========================= */
+
+    function addHistory(
+        signal,
+        rsi,
+        confidence
+    ) {
+
+        const now =
+            new Date();
+
+
+        const time =
+            now.toLocaleTimeString(
+                [],
+                {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit"
+                }
+            );
+
+
+        history.unshift({
+
+            time: time,
+
+            signal: signal,
+
+            rsi: rsi.toFixed(1),
+
+            score: confidence + "%"
+
+        });
+
+
+        history =
+            history.slice(0, 8);
+
+
+        $("historyRows").innerHTML =
+            history.map(function (item) {
+
+                return `
+
+                    <div class="history-row">
+
+                        <div>
+                            ${item.time}
+                        </div>
+
+                        <div class="history-${item.signal.toLowerCase()}">
+                            ${item.signal}
+                        </div>
+
+                        <div>
+                            ${item.rsi}
+                        </div>
+
+                        <div>
+                            ${item.score}
+                        </div>
+
+                    </div>
+
+                `;
+
+            }).join("");
+
+    }
+
+
+    /* =========================
+       RESIZE CANVAS
+    ========================= */
+
+    function resizeCanvas() {
+
+        const ratio =
+            window.devicePixelRatio || 1;
+
+
+        const rect =
+            canvas.getBoundingClientRect();
+
+
+        canvas.width =
+            Math.max(
+                1,
+                rect.width * ratio
+            );
+
+
+        canvas.height =
+            Math.max(
+                1,
+                rect.height * ratio
+            );
+
+
+        ctx.setTransform(
+            ratio,
+            0,
+            0,
+            ratio,
+            0,
+            0
+        );
+
+
+        drawChart();
+
+    }
+
+
+    /* =========================
+       DRAW CANDLESTICK CHART
+    ========================= */
+
+    function drawChart() {
+
+        if (!candles.length) {
+
+            return;
+
+        }
+
+
+        const width =
+            canvas.clientWidth;
+
+
+        const height =
+            canvas.clientHeight;
+
+
+        ctx.clearRect(
+            0,
+            0,
+            width,
+            height
+        );
+
+
+        const padding = {
+
+            left: 8,
+
+            right: 55,
+
+            top: 15,
+
+            bottom: 20
+
+        };
+
+
+        const chartWidth =
+            width
+            -
+            padding.left
+            -
+            padding.right;
+
+
+        const chartHeight =
+            height
+            -
+            padding.top
+            -
+            padding.bottom;
+
+
+        let minimum =
+            Infinity;
+
+
+        let maximum =
+            -Infinity;
+
+
+        candles.forEach(function (candle) {
+
+            minimum =
+                Math.min(
+                    minimum,
+                    candle.l
+                );
+
+
+            maximum =
+                Math.max(
+                    maximum,
+                    candle.h
+                );
+
+        });
+
+
+        const range =
+            maximum - minimum || 1;
+
+
+        function y(value) {
+
+            return (
+                padding.top
+                +
+                (
+                    (maximum - value)
+                    /
+                    range
+                )
+                *
+                chartHeight
+            );
+
+        }
+
+
+        const step =
+            chartWidth
+            /
+            candles.length;
+
+
+        const bodyWidth =
+            Math.max(
+                2,
+                step * 0.62
+            );
+
+
+        /*
+           GRID
+        */
+
+        ctx.strokeStyle =
+            "#17283b";
+
+
+        ctx.lineWidth = 1;
+
+
+        for (let i = 0; i < 5; i++) {
+
+            const gridY =
+                padding.top
+                +
+                i
+                *
+                chartHeight
+                /
+                4;
+
+
+            ctx.beginPath();
+
+            ctx.moveTo(
+                padding.left,
+                gridY
+            );
+
+            ctx.lineTo(
+                padding.left
+                +
+                chartWidth,
+                gridY
+            );
+
+            ctx.stroke();
+
+        }
+
+
+        /*
+           CANDLES
+        */
+
+        candles.forEach(
+            function (candle, index) {
+
+                const x =
+                    padding.left
+                    +
+                    index
+                    *
+                    step
+                    +
+                    step / 2;
+
+
+                const bullish =
+                    candle.c >= candle.o;
+
+
+                const color =
+                    bullish
+                        ? "#2edb87"
+                        : "#ff5b6c";
+
+
+                /*
+                   WICK
+                */
+
+                ctx.strokeStyle =
+                    color;
+
+
+                ctx.beginPath();
+
+
+                ctx.moveTo(
+                    x,
+                    y(candle.h)
+                );
+
+
+                ctx.lineTo(
+                    x,
+                    y(candle.l)
+                );
+
+
+                ctx.stroke();
+
+
+                /*
+                   BODY
+                */
+
+                ctx.fillStyle =
+                    color;
+
+
+                const top =
+                    y(
+                        Math.max(
+                            candle.o,
+                            candle.c
+                        )
+                    );
+
+
+                const bottom =
+                    y(
+                        Math.min(
+                            candle.o,
+                            candle.c
+                        )
+                    );
+
+
+                ctx.fillRect(
+
+                    x - bodyWidth / 2,
+
+                    top,
+
+                    bodyWidth,
+
+                    Math.max(
+                        1,
+                        bottom - top
+                    )
+
+                );
+
+            }
+        );
+
+
+        /*
+           EMA 9 LINE
+        */
+
+        const emaValues = [];
+
+
+        let ema =
+            candles[0].c;
+
+
+        const multiplier =
+            2 / 10;
+
+
+        candles.forEach(
+            function (candle, index) {
+
+                if (index > 0) {
+
+                    ema =
+                        candle.c
+                        *
+                        multiplier
+                        +
+                        ema
+                        *
+                        (1 - multiplier);
+
+                }
+
+
+                emaValues.push(ema);
+
+            }
+        );
+
+
+        ctx.strokeStyle =
+            "#67a9ff";
+
+
+        ctx.lineWidth = 1.5;
+
+
+        ctx.beginPath();
+
+
+        emaValues.forEach(
+            function (value, index) {
+
+                const x =
+                    padding.left
+                    +
+                    index
+                    *
+                    step
+                    +
+                    step / 2;
+
+
+                if (index === 0) {
+
+                    ctx.moveTo(
+                        x,
+                        y(value)
+                    );
+
+                }
+
+                else {
+
+                    ctx.lineTo(
+                        x,
+                        y(value)
+                    );
+
+                }
+
+            }
+        );
+
+
+        ctx.stroke();
+
+
+        /*
+           PRICE SCALE
+        */
+
+        ctx.fillStyle =
+            "#8ea1b8";
+
+
+        ctx.font =
+            "11px Arial";
+
+
+        for (let i = 0; i < 4; i++) {
+
+            const value =
+                maximum
+                -
+                range
+                *
+                i
+                /
+                4;
+
+
+            ctx.fillText(
+
+                value.toFixed(
+                    decimalPlaces()
+                ),
+
+                width - padding.right + 6,
+
+                y(value) + 4
+
+            );
+
+        }
+
+    }
+
+
+    /* =========================
+       RUN ENGINE
+    ========================= */
+
+    function runEngine() {
+
+        generateCandles();
+
+        analyze();
+
+
+        $("status").textContent =
+            "Analysis generated at "
+            +
+            new Date().toLocaleTimeString()
+            +
+            ". Demo data only.";
+
+    }
+
+
+    /* =========================
+       EVENTS
+    ========================= */
+
+    refresh.addEventListener(
+        "click",
+        runEngine
+    );
+
+
+    asset.addEventListener(
+        "change",
+        runEngine
+    );
+
+
+    timeframe.addEventListener(
+        "change",
+        runEngine
+    );
+
+
+    window.addEventListener(
+        "resize",
+        resizeCanvas
+    );
+
+
+    /* =========================
+       START
+    ========================= */
+
+    runEngine();
+
+
+    setTimeout(
+        resizeCanvas,
+        100
+    );
+
+
+})();
+
+</script>
+
+</body>
+</html>
