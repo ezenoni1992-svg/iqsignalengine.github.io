@@ -4,10 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>IQ Signal Engine V2</title>
+<title>IQ Signal Engine V3</title>
 
 <style>
-
 * {
     box-sizing: border-box;
 }
@@ -23,246 +22,210 @@ body {
     width: 100%;
     max-width: 1200px;
     margin: auto;
-    padding: 18px;
+    padding: 20px;
 }
 
-/* HEADER */
-
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+header {
+    background: #0d1b2d;
+    border: 1px solid #1e3550;
+    border-radius: 16px;
+    padding: 20px;
     margin-bottom: 18px;
-    gap: 12px;
 }
 
-.title {
-    font-size: 24px;
+header h1 {
+    margin: 0 0 8px;
+    font-size: 25px;
+}
+
+header p {
+    margin: 0;
+    color: #8fa8c2;
+}
+
+.status-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 15px;
+}
+
+.badge {
+    padding: 8px 12px;
+    border-radius: 20px;
+    background: #13283f;
+    color: #9db8d3;
+    font-size: 13px;
+}
+
+.live {
+    color: #39e58c;
+}
+
+.offline {
+    color: #ff6578;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+.card {
+    background: #0d1b2d;
+    border: 1px solid #1e3550;
+    border-radius: 16px;
+    padding: 18px;
+    margin-bottom: 18px;
+}
+
+.card h2 {
+    margin-top: 0;
+    font-size: 18px;
+}
+
+.price {
+    font-size: 34px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.signal {
+    font-size: 34px;
+    font-weight: bold;
+    text-align: center;
+    padding: 20px;
+    border-radius: 14px;
+    margin: 15px 0;
+}
+
+.call {
+    background: rgba(30, 200, 120, 0.15);
+    color: #39e58c;
+    border: 1px solid #39e58c;
+}
+
+.put {
+    background: rgba(255, 80, 100, 0.15);
+    color: #ff6578;
+    border: 1px solid #ff6578;
+}
+
+.wait {
+    background: rgba(255, 190, 70, 0.12);
+    color: #ffc44d;
+    border: 1px solid #ffc44d;
+}
+
+.confirmed {
+    color: #39e58c;
     font-weight: bold;
 }
 
-.subtitle {
-    color: #8fa3b8;
-    font-size: 13px;
-    margin-top: 4px;
+.waiting {
+    color: #ffc44d;
+    font-weight: bold;
 }
 
-.status {
-    padding: 8px 12px;
-    border-radius: 20px;
-    background: #182637;
-    font-size: 12px;
-}
-
-.status.live {
-    color: #62ff9a;
-}
-
-/* MARKET BAR */
-
-.market-bar {
+.stats {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 10px;
-    margin-bottom: 15px;
 }
 
-.market-box {
-    background: #0d1b2b;
-    border: 1px solid #1b3047;
-    border-radius: 10px;
+.stat {
+    background: #091625;
     padding: 13px;
+    border-radius: 10px;
 }
 
-.label {
-    color: #7f95aa;
-    font-size: 11px;
-    margin-bottom: 6px;
+.stat-label {
+    color: #819ab4;
+    font-size: 12px;
+    margin-bottom: 5px;
 }
 
-.value {
+.stat-value {
     font-size: 17px;
     font-weight: bold;
 }
 
-/* SIGNAL */
-
-.signal-card {
-    background: #0d1b2b;
-    border: 1px solid #1b3047;
-    border-radius: 14px;
-    padding: 20px;
-    text-align: center;
-    margin-bottom: 15px;
-}
-
-.signal-label {
-    color: #91a5ba;
-    font-size: 12px;
-    margin-bottom: 8px;
-}
-
-.signal {
-    font-size: 42px;
-    font-weight: 900;
-    letter-spacing: 2px;
-}
-
-.signal.call {
-    color: #35f58a;
-}
-
-.signal.put {
-    color: #ff4d6d;
-}
-
-.signal.wait {
-    color: #ffc857;
-}
-
-.score {
-    margin-top: 7px;
-    color: #b6c5d5;
-}
-
-/* CHART */
-
-.chart-card {
-    background: #0d1b2b;
-    border: 1px solid #1b3047;
-    border-radius: 14px;
-    padding: 15px;
-    margin-bottom: 15px;
-}
-
-.chart-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-.chart-title {
-    font-weight: bold;
-}
-
-.chart-info {
-    color: #8fa3b8;
-    font-size: 12px;
-}
-
-.chart-wrapper {
-    width: 100%;
-    height: 420px;
-    position: relative;
-    overflow: hidden;
-    border-radius: 10px;
-    background: #07111f;
-}
-
 canvas {
     width: 100%;
-    height: 100%;
+    height: 390px;
+    background: #07111f;
+    border-radius: 12px;
     display: block;
 }
 
-/* INDICATORS */
-
-.indicators {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    margin-bottom: 15px;
+.full {
+    grid-column: 1 / -1;
 }
 
-.indicator {
-    background: #0d1b2b;
-    border: 1px solid #1b3047;
-    border-radius: 10px;
-    padding: 14px;
-}
-
-.indicator-value {
-    font-size: 18px;
-    font-weight: bold;
-}
-
-/* HISTORY */
-
-.history-card {
-    background: #0d1b2b;
-    border: 1px solid #1b3047;
-    border-radius: 14px;
-    padding: 15px;
-}
-
-.history-title {
-    font-weight: bold;
-    margin-bottom: 10px;
+.history {
+    max-height: 230px;
+    overflow-y: auto;
 }
 
 .history-row {
     display: flex;
     justify-content: space-between;
-    padding: 9px 0;
-    border-bottom: 1px solid #182b3e;
+    padding: 10px;
+    border-bottom: 1px solid #1b3047;
     font-size: 13px;
 }
 
-.history-call {
-    color: #35f58a;
+.v3-highlight {
+    border: 1px solid #6b5cff;
+    box-shadow: 0 0 20px rgba(107, 92, 255, 0.12);
 }
 
-.history-put {
-    color: #ff4d6d;
+.v3-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.history-wait {
-    color: #ffc857;
+.v3-label {
+    background: #6b5cff;
+    padding: 5px 9px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.score {
+    font-size: 20px;
+    font-weight: bold;
 }
 
 .disclaimer {
-    color: #687e93;
-    font-size: 11px;
-    text-align: center;
+    color: #71869d;
+    font-size: 12px;
     line-height: 1.5;
-    margin: 20px 5px 5px;
+    text-align: center;
+    margin-top: 15px;
 }
 
-/* MOBILE */
+@media (max-width: 800px) {
 
-@media (max-width: 700px) {
-
-    .container {
-        padding: 10px;
+    .grid {
+        grid-template-columns: 1fr;
     }
 
-    .header {
-        align-items: flex-start;
+    .full {
+        grid-column: auto;
     }
 
-    .title {
-        font-size: 20px;
+    canvas {
+        height: 300px;
     }
 
-    .market-bar {
-        grid-template-columns: repeat(2, 1fr);
+    .price {
+        font-size: 28px;
     }
-
-    .indicators {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .chart-wrapper {
-        height: 360px;
-    }
-
-    .signal {
-        font-size: 36px;
-    }
-
 }
-
 </style>
 </head>
 
@@ -270,574 +233,691 @@ canvas {
 
 <div class="container">
 
-    <!-- HEADER -->
+<header>
 
-    <div class="header">
+    <h1>IQ Signal Engine</h1>
 
-        <div>
-            <div class="title">
-                IQ Signal Engine V2
-            </div>
+    <p>
+        Live EURJPY-OTC Market Analysis
+    </p>
 
-            <div class="subtitle">
-                Live market analysis
-            </div>
+    <div class="status-row">
+
+        <div class="badge">
+            Asset:
+            <strong id="asset">EURJPY-OTC</strong>
         </div>
 
-        <div id="connectionStatus" class="status">
-            CONNECTING...
+        <div class="badge">
+            Timeframe:
+            <strong>1 MIN</strong>
+        </div>
+
+        <div class="badge">
+            Stream:
+            <strong id="streamStatus">CONNECTING...</strong>
+        </div>
+
+        <div class="badge">
+            Candles:
+            <strong id="candleCount">0</strong>
         </div>
 
     </div>
 
+</header>
 
-    <!-- MARKET -->
 
-    <div class="market-bar">
+<div class="grid">
 
-        <div class="market-box">
-            <div class="label">ASSET</div>
-            <div class="value" id="asset">
-                EURJPY-OTC
+<!-- =====================================================
+     LIVE PRICE
+===================================================== -->
+
+<div class="card">
+
+    <h2>Live Price</h2>
+
+    <div class="price" id="price">
+        --
+    </div>
+
+    <div style="color:#819ab4;">
+        EURJPY-OTC
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     V2
+===================================================== -->
+
+<div class="card">
+
+    <h2>V2 Signal Engine</h2>
+
+    <div id="v2Signal" class="signal wait">
+        WAIT
+    </div>
+
+    <div class="stats">
+
+        <div class="stat">
+            <div class="stat-label">
+                Score
+            </div>
+
+            <div class="stat-value" id="v2Score">
+                0/5
             </div>
         </div>
 
-        <div class="market-box">
-            <div class="label">TIMEFRAME</div>
-            <div class="value">
-                1 MIN
+        <div class="stat">
+            <div class="stat-label">
+                RSI
             </div>
-        </div>
 
-        <div class="market-box">
-            <div class="label">LIVE PRICE</div>
-            <div class="value" id="price">
+            <div class="stat-value" id="v2RSI">
                 --
             </div>
         </div>
 
-        <div class="market-box">
-            <div class="label">CANDLES</div>
-            <div class="value" id="candleCount">
-                --
-            </div>
-        </div>
-
-    </div>
-
-
-    <!-- SIGNAL -->
-
-    <div class="signal-card">
-
-        <div class="signal-label">
-            CURRENT SIGNAL
-        </div>
-
-        <div id="signal" class="signal wait">
-            WAIT
-        </div>
-
-        <div id="score" class="score">
-            Score: --
-        </div>
-
-    </div>
-
-
-    <!-- CHART -->
-
-    <div class="chart-card">
-
-        <div class="chart-header">
-
-            <div class="chart-title">
-                Live Candlestick Chart
-            </div>
-
-            <div id="chartInfo" class="chart-info">
-                Waiting for data...
-            </div>
-
-        </div>
-
-        <div class="chart-wrapper">
-            <canvas id="chart"></canvas>
-        </div>
-
-    </div>
-
-
-    <!-- INDICATORS -->
-
-    <div class="indicators">
-
-        <div class="indicator">
-
-            <div class="label">
-                RSI 14
-            </div>
-
-            <div id="rsi" class="indicator-value">
-                --
-            </div>
-
-        </div>
-
-
-        <div class="indicator">
-
-            <div class="label">
+        <div class="stat">
+            <div class="stat-label">
                 EMA 9
             </div>
 
-            <div id="ema9" class="indicator-value">
+            <div class="stat-value" id="v2EMA9">
                 --
             </div>
-
         </div>
 
-
-        <div class="indicator">
-
-            <div class="label">
+        <div class="stat">
+            <div class="stat-label">
                 EMA 21
             </div>
 
-            <div id="ema21" class="indicator-value">
+            <div class="stat-value" id="v2EMA21">
                 --
             </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     V3
+===================================================== -->
+
+<div class="card v3-highlight">
+
+    <div class="v3-title">
+
+        <h2>
+            V3 Signal Engine
+        </h2>
+
+        <span class="v3-label">
+            NEW
+        </span>
+
+    </div>
+
+    <div id="v3Signal" class="signal wait">
+        WAIT
+    </div>
+
+    <div style="text-align:center; margin-bottom:15px;">
+
+        <div class="score" id="v3Score">
+            0/5
+        </div>
+
+        <div id="v3Confirmation"
+             class="waiting">
+
+            WAITING
 
         </div>
 
+    </div>
 
-        <div class="indicator">
+    <div class="stats">
 
-            <div class="label">
-                MOMENTUM
+        <div class="stat">
+
+            <div class="stat-label">
+                Trend
             </div>
 
-            <div id="momentum" class="indicator-value">
+            <div class="stat-value"
+                 id="v3Trend">
+
                 --
+
+            </div>
+
+        </div>
+
+        <div class="stat">
+
+            <div class="stat-label">
+                RSI
+            </div>
+
+            <div class="stat-value"
+                 id="v3RSI">
+
+                --
+
+            </div>
+
+        </div>
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Momentum
+            </div>
+
+            <div class="stat-value"
+                 id="v3Momentum">
+
+                --
+
+            </div>
+
+        </div>
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Candle Strength
+            </div>
+
+            <div class="stat-value"
+                 id="v3Candle">
+
+                --
+
+            </div>
+
+        </div>
+
+        <div class="stat">
+
+            <div class="stat-label">
+                EMA Slope
+            </div>
+
+            <div class="stat-value"
+                 id="v3Slope">
+
+                --
+
+            </div>
+
+        </div>
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Confirmed Candle
+            </div>
+
+            <div class="stat-value"
+                 id="v3Timestamp">
+
+                --
+
             </div>
 
         </div>
 
     </div>
 
+</div>
 
-    <!-- HISTORY -->
 
-    <div class="history-card">
+<!-- =====================================================
+     CHART
+===================================================== -->
 
-        <div class="history-title">
-            Signal History
-        </div>
+<div class="card full">
 
-        <div id="history">
-            <div class="history-row">
-                <span>Waiting for signals...</span>
-            </div>
-        </div>
+    <h2>
+        Live Candlestick Chart
+    </h2>
+
+    <canvas id="chart"></canvas>
+
+</div>
+
+
+<!-- =====================================================
+     HISTORY
+===================================================== -->
+
+<div class="card full">
+
+    <h2>
+        V3 Signal History
+    </h2>
+
+    <div id="history"
+         class="history">
+
+        Waiting for signals...
 
     </div>
 
+</div>
 
-    <div class="disclaimer">
-        Signals are generated from technical indicators and live market data.
-        They are not guaranteed predictions or financial advice.
-        Trading involves financial risk.
-    </div>
+</div>
+
+
+<div class="disclaimer">
+
+    This system provides technical market analysis only.
+    Signals are not guaranteed outcomes.
+    Test with a practice/demo account before considering
+    any real-money use.
+
+</div>
 
 </div>
 
 
 <script>
 
-/* =====================================================
-   CONFIGURATION
-===================================================== */
+/* ========================================================
+   BACKEND
+======================================================== */
 
 const API_URL =
     "https://iqsignalengine-backend.onrender.com";
 
-const SIGNAL_URL =
-    API_URL + "/live-signal";
 
-const CANDLES_URL =
-    API_URL + "/live-candles";
-
-
-/* =====================================================
+/* ========================================================
    STATE
-===================================================== */
+======================================================== */
 
 let candles = [];
 
-let signalHistory = [];
+let history = [];
 
-let lastSignal = null;
-
-
-/* =====================================================
-   ELEMENTS
-===================================================== */
-
-const signalElement =
-    document.getElementById("signal");
-
-const scoreElement =
-    document.getElementById("score");
-
-const priceElement =
-    document.getElementById("price");
-
-const candleCountElement =
-    document.getElementById("candleCount");
-
-const rsiElement =
-    document.getElementById("rsi");
-
-const ema9Element =
-    document.getElementById("ema9");
-
-const ema21Element =
-    document.getElementById("ema21");
-
-const momentumElement =
-    document.getElementById("momentum");
-
-const connectionElement =
-    document.getElementById("connectionStatus");
-
-const historyElement =
-    document.getElementById("history");
-
-const chartInfoElement =
-    document.getElementById("chartInfo");
-
-const canvas =
-    document.getElementById("chart");
-
-const ctx =
-    canvas.getContext("2d");
+let lastV3Timestamp = null;
 
 
-/* =====================================================
-   FETCH SIGNAL
-===================================================== */
+/* ========================================================
+   HELPERS
+======================================================== */
 
-async function fetchSignal() {
+function formatNumber(value, decimals = 6) {
+
+    if (value === undefined ||
+        value === null ||
+        isNaN(value)) {
+
+        return "--";
+
+    }
+
+    return Number(value).toFixed(decimals);
+}
+
+
+function signalClass(signal) {
+
+    if (signal === "CALL") {
+        return "call";
+    }
+
+    if (signal === "PUT") {
+        return "put";
+    }
+
+    return "wait";
+}
+
+
+function setSignal(elementId, signal) {
+
+    const element =
+        document.getElementById(elementId);
+
+    element.className =
+        "signal " + signalClass(signal);
+
+    element.textContent =
+        signal || "WAIT";
+}
+
+
+function formatTime(timestamp) {
+
+    if (!timestamp) {
+        return "--";
+    }
+
+    const date =
+        new Date(timestamp * 1000);
+
+    return date.toLocaleTimeString(
+        [],
+        {
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+        }
+    );
+}
+
+
+/* ========================================================
+   FETCH V2
+======================================================== */
+
+async function fetchV2() {
 
     try {
 
         const response =
-            await fetch(SIGNAL_URL + "?t=" + Date.now());
+            await fetch(
+                API_URL + "/live-signal"
+            );
 
         if (!response.ok) {
-            throw new Error("Signal request failed");
+            throw new Error("V2 request failed");
         }
 
         const data =
             await response.json();
 
-        updateSignal(data);
+        const signal =
+            data.signal;
 
-        connectionElement.textContent =
-            "● LIVE";
+        document.getElementById(
+            "price"
+        ).textContent =
+            formatNumber(signal.price);
 
-        connectionElement.classList.add("live");
+        document.getElementById(
+            "v2Score"
+        ).textContent =
+            signal.score;
 
-    }
+        document.getElementById(
+            "v2RSI"
+        ).textContent =
+            formatNumber(signal.rsi, 2);
 
-    catch (error) {
+        document.getElementById(
+            "v2EMA9"
+        ).textContent =
+            formatNumber(signal.ema9);
 
-        connectionElement.textContent =
+        document.getElementById(
+            "v2EMA21"
+        ).textContent =
+            formatNumber(signal.ema21);
+
+        setSignal(
+            "v2Signal",
+            signal.signal
+        );
+
+        document.getElementById(
+            "streamStatus"
+        ).textContent =
+            data.stream.status.toUpperCase();
+
+        if (data.stream.status === "streaming") {
+
+            document.getElementById(
+                "streamStatus"
+            ).className = "live";
+
+        } else {
+
+            document.getElementById(
+                "streamStatus"
+            ).className = "offline";
+
+        }
+
+        document.getElementById(
+            "candleCount"
+        ).textContent =
+            data.candles_available;
+
+    } catch (error) {
+
+        console.error(
+            "V2 error:",
+            error
+        );
+
+        document.getElementById(
+            "streamStatus"
+        ).textContent =
             "OFFLINE";
 
-        connectionElement.classList.remove("live");
-
-        console.error(error);
-
+        document.getElementById(
+            "streamStatus"
+        ).className =
+            "offline";
     }
-
 }
 
 
-/* =====================================================
-   FETCH CANDLES
-===================================================== */
+/* ========================================================
+   FETCH V3
+======================================================== */
 
-async function fetchCandles() {
+async function fetchV3() {
 
     try {
 
         const response =
-            await fetch(CANDLES_URL + "?t=" + Date.now());
+            await fetch(
+                API_URL + "/v3-signal"
+            );
 
         if (!response.ok) {
-            throw new Error("Candle request failed");
+            throw new Error("V3 request failed");
         }
 
         const data =
             await response.json();
 
-        candles =
-            Array.isArray(data.candles)
-            ? data.candles
-            : [];
+        const signal =
+            data.signal;
 
-        candleCountElement.textContent =
-            candles.length;
+        /* Main V3 signal */
 
-        if (candles.length > 0) {
+        setSignal(
+            "v3Signal",
+            signal.signal
+        );
 
-            const last =
-                candles[candles.length - 1];
 
-            priceElement.textContent =
-                Number(last.close).toFixed(6);
+        /* Score */
 
-            chartInfoElement.textContent =
-                "100 × 1-minute candles";
+        document.getElementById(
+            "v3Score"
+        ).textContent =
+            signal.score;
+
+
+        /* Confirmation */
+
+        const confirmation =
+            document.getElementById(
+                "v3Confirmation"
+            );
+
+        confirmation.textContent =
+            signal.confirmation;
+
+        if (
+            signal.confirmation ===
+            "CONFIRMED"
+        ) {
+
+            confirmation.className =
+                "confirmed";
+
+        } else {
+
+            confirmation.className =
+                "waiting";
 
         }
 
-        drawChart();
 
-    }
+        /* Trend */
 
-    catch (error) {
-
-        console.error(error);
-
-    }
-
-}
+        document.getElementById(
+            "v3Trend"
+        ).textContent =
+            signal.trend;
 
 
-/* =====================================================
-   UPDATE SIGNAL UI
-===================================================== */
+        /* RSI */
 
-function updateSignal(data) {
-
-    if (!data || !data.signal) {
-        return;
-    }
-
-    const s =
-        data.signal;
-
-    const stream =
-        data.stream || {};
-
-    signalElement.textContent =
-        s.signal || "WAIT";
-
-    scoreElement.textContent =
-        "Score: " + (s.score || "--");
-
-    priceElement.textContent =
-        s.price
-        ? Number(s.price).toFixed(6)
-        : "--";
-
-    rsiElement.textContent =
-        s.rsi !== undefined
-        ? Number(s.rsi).toFixed(2)
-        : "--";
-
-    ema9Element.textContent =
-        s.ema9 !== undefined
-        ? Number(s.ema9).toFixed(6)
-        : "--";
-
-    ema21Element.textContent =
-        s.ema21 !== undefined
-        ? Number(s.ema21).toFixed(6)
-        : "--";
+        document.getElementById(
+            "v3RSI"
+        ).textContent =
+            formatNumber(
+                signal.rsi,
+                2
+            );
 
 
-    /* SIGNAL COLOR */
+        /* Momentum */
 
-    signalElement.classList.remove(
-        "call",
-        "put",
-        "wait"
-    );
-
-    if (s.signal === "CALL") {
-
-        signalElement.classList.add("call");
-
-    }
-
-    else if (s.signal === "PUT") {
-
-        signalElement.classList.add("put");
-
-    }
-
-    else {
-
-        signalElement.classList.add("wait");
-
-    }
+        document.getElementById(
+            "v3Momentum"
+        ).textContent =
+            signal.momentum;
 
 
-    /* CONNECTION */
+        /* Candle strength */
 
-    if (stream.status === "streaming") {
+        document.getElementById(
+            "v3Candle"
+        ).textContent =
+            signal.candle_strength;
 
-        connectionElement.textContent =
-            "● LIVE";
 
-        connectionElement.classList.add("live");
+        /* EMA slope */
 
-    }
+        document.getElementById(
+            "v3Slope"
+        ).textContent =
+            signal.ema_slope;
 
-    else {
 
-        connectionElement.textContent =
-            String(
-                stream.status || "CONNECTING"
-            ).toUpperCase();
+        /* Confirmed candle */
 
-        connectionElement.classList.remove(
-            "live"
+        document.getElementById(
+            "v3Timestamp"
+        ).textContent =
+            formatTime(
+                signal.candle_timestamp
+            );
+
+
+        /* ------------------------------------------------
+           ADD HISTORY ONLY WHEN A NEW DECISION CANDLE
+           APPEARS
+        ------------------------------------------------ */
+
+        if (
+            signal.candle_timestamp &&
+            signal.candle_timestamp !==
+            lastV3Timestamp
+        ) {
+
+            lastV3Timestamp =
+                signal.candle_timestamp;
+
+            addHistory(signal);
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "V3 error:",
+            error
         );
 
     }
-
-
-    /* MOMENTUM */
-
-    if (candles.length >= 4) {
-
-        const a =
-            candles[candles.length - 4].close;
-
-        const b =
-            candles[candles.length - 1].close;
-
-        const momentum =
-            b - a;
-
-        momentumElement.textContent =
-            momentum >= 0
-            ? "+" + momentum.toFixed(6)
-            : momentum.toFixed(6);
-
-    }
-
-
-    /* SIGNAL HISTORY */
-
-    if (
-        lastSignal !== s.signal ||
-        signalHistory.length === 0
-    ) {
-
-        addHistory(
-            s.signal,
-            s.score,
-            s.price
-        );
-
-        lastSignal =
-            s.signal;
-
-    }
-
 }
 
 
-/* =====================================================
-   ADD HISTORY
-===================================================== */
+/* ========================================================
+   HISTORY
+======================================================== */
 
-function addHistory(
-    signal,
-    score,
-    price
-) {
+function addHistory(signal) {
 
-    const now =
-        new Date();
-
-    const time =
-        now.toLocaleTimeString();
-
-    signalHistory.unshift({
+    history.unshift({
 
         signal:
-            signal || "WAIT",
+            signal.signal,
 
         score:
-            score || "--",
+            signal.score,
 
-        price:
-            price || "--",
+        trend:
+            signal.trend,
 
         time:
-            time
+            formatTime(
+                signal.candle_timestamp
+            )
 
     });
 
+    if (history.length > 30) {
 
-    /* Keep last 10 */
-
-    signalHistory =
-        signalHistory.slice(0, 10);
-
-
-    renderHistory();
-
-}
-
-
-/* =====================================================
-   RENDER HISTORY
-===================================================== */
-
-function renderHistory() {
-
-    if (signalHistory.length === 0) {
-
-        historyElement.innerHTML =
-            '<div class="history-row">' +
-            '<span>Waiting for signals...</span>' +
-            '</div>';
-
-        return;
+        history =
+            history.slice(0, 30);
 
     }
 
+    renderHistory();
+}
 
-    historyElement.innerHTML =
-        signalHistory.map(item => {
 
-            let cls =
-                "history-wait";
+function renderHistory() {
 
-            if (item.signal === "CALL") {
-                cls = "history-call";
-            }
+    const container =
+        document.getElementById(
+            "history"
+        );
 
-            if (item.signal === "PUT") {
-                cls = "history-put";
-            }
+    if (history.length === 0) {
+
+        container.innerHTML =
+            "Waiting for signals...";
+
+        return;
+    }
+
+    container.innerHTML =
+        history.map(item => {
 
             return `
-
                 <div class="history-row">
 
-                    <span>
-                        ${item.time}
-                    </span>
-
-                    <strong class="${cls}">
+                    <strong>
                         ${item.signal}
                     </strong>
 
@@ -846,11 +926,14 @@ function renderHistory() {
                     </span>
 
                     <span>
-                        ${Number(item.price).toFixed(6)}
+                        ${item.trend}
+                    </span>
+
+                    <span>
+                        ${item.time}
                     </span>
 
                 </div>
-
             `;
 
         }).join("");
@@ -858,11 +941,62 @@ function renderHistory() {
 }
 
 
-/* =====================================================
-   CANVAS RESIZE
-===================================================== */
+/* ========================================================
+   FETCH CANDLES
+======================================================== */
 
-function resizeCanvas() {
+async function fetchCandles() {
+
+    try {
+
+        const response =
+            await fetch(
+                API_URL + "/live-candles"
+            );
+
+        if (!response.ok) {
+            throw new Error(
+                "Candle request failed"
+            );
+        }
+
+        const data =
+            await response.json();
+
+        candles =
+            data.candles || [];
+
+        document.getElementById(
+            "candleCount"
+        ).textContent =
+            candles.length;
+
+        drawChart();
+
+    } catch (error) {
+
+        console.error(
+            "Candle error:",
+            error
+        );
+
+    }
+}
+
+
+/* ========================================================
+   CANDLESTICK CHART
+======================================================== */
+
+function drawChart() {
+
+    const canvas =
+        document.getElementById(
+            "chart"
+        );
+
+    const ctx =
+        canvas.getContext("2d");
 
     const rect =
         canvas.getBoundingClientRect();
@@ -876,36 +1010,13 @@ function resizeCanvas() {
     canvas.height =
         rect.height * dpr;
 
-    ctx.setTransform(
-        dpr,
-        0,
-        0,
-        dpr,
-        0,
-        0
-    );
-
-}
-
-
-/* =====================================================
-   DRAW CHART
-===================================================== */
-
-function drawChart() {
-
-    if (!candles || candles.length === 0) {
-        return;
-    }
-
-    resizeCanvas();
+    ctx.scale(dpr, dpr);
 
     const width =
-        canvas.clientWidth;
+        rect.width;
 
     const height =
-        canvas.clientHeight;
-
+        rect.height;
 
     ctx.clearRect(
         0,
@@ -915,90 +1026,66 @@ function drawChart() {
     );
 
 
-    /* -------------------------------------------------
-       BACKGROUND
-    ------------------------------------------------- */
+    if (!candles.length) {
+        return;
+    }
 
-    ctx.fillStyle =
-        "#07111f";
-
-    ctx.fillRect(
-        0,
-        0,
-        width,
-        height
-    );
-
-
-    /* -------------------------------------------------
-       VISIBLE CANDLES
-    ------------------------------------------------- */
 
     const visible =
         candles.slice(-70);
 
 
-    let minPrice =
-        Infinity;
+    let min =
+        Math.min(
+            ...visible.map(c => c.low)
+        );
 
-    let maxPrice =
-        -Infinity;
+    let max =
+        Math.max(
+            ...visible.map(c => c.high)
+        );
 
 
-    visible.forEach(c => {
+    const padding =
+        30;
 
-        minPrice =
-            Math.min(
-                minPrice,
-                Number(c.low)
-            );
+    const chartHeight =
+        height - 2 * padding;
 
-        maxPrice =
-            Math.max(
-                maxPrice,
-                Number(c.high)
-            );
-
-    });
+    const chartWidth =
+        width - 2 * padding;
 
 
     const range =
-        maxPrice - minPrice || 0.001;
+        max - min || 1;
 
 
-    const paddingTop = 25;
-    const paddingBottom = 30;
-    const chartHeight =
-        height -
-        paddingTop -
-        paddingBottom;
-
-
-    /* -------------------------------------------------
-       GRID
-    ------------------------------------------------- */
+    /* GRID */
 
     ctx.strokeStyle =
-        "#15283b";
+        "#17304a";
 
     ctx.lineWidth = 1;
 
-
-    for (let i = 0; i <= 5; i++) {
+    for (
+        let i = 0;
+        i <= 5;
+        i++
+    ) {
 
         const y =
-            paddingTop +
+            padding +
             (chartHeight / 5) * i;
 
         ctx.beginPath();
 
         ctx.moveTo(
-            0,
+            padding,
             y
         );
 
         ctx.lineTo(
-            width,
+            width - padding,
             y
         );
 
@@ -1007,176 +1094,148 @@ function drawChart() {
     }
 
 
-    /* -------------------------------------------------
-       CANDLE WIDTH
-    ------------------------------------------------- */
+    /* CANDLES */
 
-    const spacing =
-        width / visible.length;
+    const step =
+        chartWidth / visible.length;
 
-    const candleWidth =
+    const bodyWidth =
         Math.max(
             3,
-            spacing * 0.62
+            step * 0.55
         );
 
 
-    /* -------------------------------------------------
-       DRAW CANDLES
-    ------------------------------------------------- */
+    visible.forEach(
+        (candle, index) => {
 
-    visible.forEach((candle, index) => {
-
-        const open =
-            Number(candle.open);
-
-        const high =
-            Number(candle.high);
-
-        const low =
-            Number(candle.low);
-
-        const close =
-            Number(candle.close);
+            const x =
+                padding +
+                index * step +
+                step / 2;
 
 
-        const x =
-            spacing * index +
-            spacing / 2;
+            const highY =
+                padding +
+                ((max - candle.high) /
+                range) *
+                chartHeight;
 
 
-        function priceToY(price) {
+            const lowY =
+                padding +
+                ((max - candle.low) /
+                range) *
+                chartHeight;
 
-            return (
-                paddingTop +
-                (
-                    maxPrice - price
-                ) / range *
-                chartHeight
+
+            const openY =
+                padding +
+                ((max - candle.open) /
+                range) *
+                chartHeight;
+
+
+            const closeY =
+                padding +
+                ((max - candle.close) /
+                range) *
+                chartHeight;
+
+
+            const bullish =
+                candle.close >=
+                candle.open;
+
+
+            /* WICK */
+
+            ctx.strokeStyle =
+                bullish
+                    ? "#39e58c"
+                    : "#ff6578";
+
+            ctx.lineWidth = 1;
+
+            ctx.beginPath();
+
+            ctx.moveTo(
+                x,
+                highY
+            );
+
+            ctx.lineTo(
+                x,
+                lowY
+            );
+
+            ctx.stroke();
+
+
+            /* BODY */
+
+            const top =
+                Math.min(
+                    openY,
+                    closeY
+                );
+
+            const bodyHeight =
+                Math.max(
+                    2,
+                    Math.abs(
+                        closeY -
+                        openY
+                    )
+                );
+
+
+            ctx.fillStyle =
+                bullish
+                    ? "#39e58c"
+                    : "#ff6578";
+
+
+            ctx.fillRect(
+                x - bodyWidth / 2,
+                top,
+                bodyWidth,
+                bodyHeight
             );
 
         }
+    );
 
 
-        const yOpen =
-            priceToY(open);
+    /* CURRENT PRICE LINE */
 
-        const yClose =
-            priceToY(close);
-
-        const yHigh =
-            priceToY(high);
-
-        const yLow =
-            priceToY(low);
-
-
-        const bullish =
-            close >= open;
-
-
-        /* WICK */
-
-        ctx.strokeStyle =
-            bullish
-            ? "#35f58a"
-            : "#ff4d6d";
-
-        ctx.lineWidth = 1;
-
-
-        ctx.beginPath();
-
-        ctx.moveTo(
-            x,
-            yHigh
-        );
-
-        ctx.lineTo(
-            x,
-            yLow
-        );
-
-        ctx.stroke();
-
-
-        /* BODY */
-
-        const bodyTop =
-            Math.min(
-                yOpen,
-                yClose
-            );
-
-        const bodyHeight =
-            Math.max(
-                1,
-                Math.abs(
-                    yClose - yOpen
-                )
-            );
-
-
-        ctx.fillStyle =
-            bullish
-            ? "#35f58a"
-            : "#ff4d6d";
-
-
-        ctx.fillRect(
-
-            x - candleWidth / 2,
-
-            bodyTop,
-
-            candleWidth,
-
-            bodyHeight
-
-        );
-
-    });
-
-
-    /* -------------------------------------------------
-       CURRENT PRICE LINE
-    ------------------------------------------------- */
-
-    const latest =
+    const current =
         visible[visible.length - 1];
 
-    const currentPrice =
-        Number(latest.close);
-
-
     const priceY =
-        paddingTop +
-        (
-            maxPrice - currentPrice
-        ) / range *
+        padding +
+        ((max - current.close) /
+        range) *
         chartHeight;
 
 
     ctx.strokeStyle =
-        "#ffffff";
+        "#ffc44d";
 
     ctx.setLineDash([
         5,
         5
     ]);
 
-    ctx.lineWidth = 1;
-
-
     ctx.beginPath();
 
     ctx.moveTo(
-        0,
+        padding,
         priceY
     );
 
     ctx.lineTo(
-        width,
+        width - padding,
         priceY
     );
 
@@ -1184,60 +1243,39 @@ function drawChart() {
 
     ctx.setLineDash([]);
 
+}
 
-    /* -------------------------------------------------
-       PRICE LABEL
-    ------------------------------------------------- */
 
-    ctx.fillStyle =
-        "#ffffff";
+/* ========================================================
+   MAIN UPDATE LOOP
+======================================================== */
 
-    ctx.font =
-        "11px Arial";
+async function updateDashboard() {
 
-    ctx.fillText(
+    await Promise.all([
 
-        currentPrice.toFixed(6),
+        fetchV2(),
 
-        8,
+        fetchV3(),
 
-        Math.max(
-            15,
-            priceY - 5
-        )
+        fetchCandles()
 
-    );
+    ]);
 
 }
 
 
-/* =====================================================
+/* ========================================================
    START
-===================================================== */
+======================================================== */
 
-async function refresh() {
-
-    await fetchSignal();
-
-    await fetchCandles();
-
-}
-
-
-/* Initial */
-
-refresh();
-
-
-/* Update every 2 seconds */
+updateDashboard();
 
 setInterval(
-    refresh,
+    updateDashboard,
     2000
 );
 
-
-/* Resize */
 
 window.addEventListener(
     "resize",
