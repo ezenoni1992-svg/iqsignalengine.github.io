@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>IQ Signal Engine V3</title>
+<title>IQ Signal Engine V3.2</title>
 
 <style>
 * {
@@ -13,217 +13,249 @@
 
 body {
     margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Arial, sans-serif;
     background: #07111f;
-    color: #ffffff;
+    color: white;
 }
 
 .container {
-    width: 100%;
-    max-width: 1200px;
+    max-width: 1100px;
     margin: auto;
     padding: 20px;
 }
 
 header {
-    background: #0d1b2d;
-    border: 1px solid #1e3550;
-    border-radius: 16px;
+    background: #0d1b2a;
     padding: 20px;
-    margin-bottom: 18px;
+    border-radius: 15px;
+    margin-bottom: 20px;
 }
 
-header h1 {
+h1 {
     margin: 0 0 8px;
-    font-size: 25px;
 }
 
-header p {
-    margin: 0;
-    color: #8fa8c2;
+.subtitle {
+    color: #9fb3c8;
 }
 
-.status-row {
+.topbar {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
     margin-top: 15px;
 }
 
-.badge {
-    padding: 8px 12px;
-    border-radius: 20px;
-    background: #13283f;
-    color: #9db8d3;
-    font-size: 13px;
+button {
+    border: none;
+    padding: 12px 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    background: #1d8cff;
+    color: white;
 }
 
-.live {
-    color: #39e58c;
+button:hover {
+    opacity: .9;
 }
 
-.offline {
-    color: #ff6578;
+#alertStatus {
+    padding: 12px 15px;
+    border-radius: 10px;
+    background: #162536;
 }
 
 .grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 18px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 15px;
 }
 
 .card {
-    background: #0d1b2d;
-    border: 1px solid #1e3550;
-    border-radius: 16px;
+    background: #0d1b2a;
+    border-radius: 15px;
     padding: 18px;
-    margin-bottom: 18px;
+    margin-bottom: 15px;
 }
 
 .card h2 {
     margin-top: 0;
-    font-size: 18px;
-}
-
-.price {
-    font-size: 34px;
-    font-weight: bold;
-    margin: 10px 0;
 }
 
 .signal {
-    font-size: 34px;
+    font-size: 42px;
     font-weight: bold;
     text-align: center;
     padding: 20px;
     border-radius: 14px;
-    margin: 15px 0;
+    margin-bottom: 15px;
 }
 
 .call {
-    background: rgba(30, 200, 120, 0.15);
-    color: #39e58c;
-    border: 1px solid #39e58c;
+    background: #064d35;
+    color: #50ffb1;
 }
 
 .put {
-    background: rgba(255, 80, 100, 0.15);
-    color: #ff6578;
-    border: 1px solid #ff6578;
+    background: #5a1018;
+    color: #ff6b7a;
 }
 
 .wait {
-    background: rgba(255, 190, 70, 0.12);
-    color: #ffc44d;
-    border: 1px solid #ffc44d;
+    background: #45370b;
+    color: #ffd84d;
 }
 
-.confirmed {
-    color: #39e58c;
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 9px 0;
+    border-bottom: 1px solid #203247;
+}
+
+.info-row:last-child {
+    border-bottom: none;
+}
+
+.label {
+    color: #9fb3c8;
+}
+
+.value {
     font-weight: bold;
 }
 
-.waiting {
-    color: #ffc44d;
-    font-weight: bold;
-}
-
-.stats {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-}
-
-.stat {
-    background: #091625;
-    padding: 13px;
-    border-radius: 10px;
-}
-
-.stat-label {
-    color: #819ab4;
-    font-size: 12px;
-    margin-bottom: 5px;
-}
-
-.stat-value {
-    font-size: 17px;
-    font-weight: bold;
+.chart-box {
+    width: 100%;
+    overflow-x: auto;
 }
 
 canvas {
     width: 100%;
-    height: 390px;
-    background: #07111f;
+    height: 380px;
+    background: #081522;
     border-radius: 12px;
-    display: block;
-}
-
-.full {
-    grid-column: 1 / -1;
 }
 
 .history {
-    max-height: 230px;
+    max-height: 350px;
     overflow-y: auto;
 }
 
-.history-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    border-bottom: 1px solid #1b3047;
-    font-size: 13px;
-}
-
-.v3-highlight {
-    border: 1px solid #6b5cff;
-    box-shadow: 0 0 20px rgba(107, 92, 255, 0.12);
-}
-
-.v3-title {
-    display: flex;
-    justify-content: space-between;
+.history-item {
+    display: grid;
+    grid-template-columns: 80px 80px 1fr;
+    gap: 10px;
     align-items: center;
-}
-
-.v3-label {
-    background: #6b5cff;
-    padding: 5px 9px;
+    padding: 10px;
+    margin-bottom: 8px;
+    background: #111f2e;
     border-radius: 8px;
-    font-size: 11px;
-    font-weight: bold;
 }
 
-.score {
-    font-size: 20px;
-    font-weight: bold;
+.history-call {
+    color: #50ffb1;
 }
 
-.disclaimer {
-    color: #71869d;
-    font-size: 12px;
-    line-height: 1.5;
+.history-put {
+    color: #ff6b7a;
+}
+
+.history-wait {
+    color: #ffd84d;
+}
+
+.alert-box {
+    border: 1px solid #253b52;
+}
+
+.alert-item {
+    padding: 12px;
+    margin-bottom: 8px;
+    border-radius: 10px;
+    background: #111f2e;
+}
+
+.alert-call {
+    border-left: 5px solid #20d98a;
+}
+
+.alert-put {
+    border-left: 5px solid #ff4757;
+}
+
+.toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 300px;
+    padding: 18px;
+    border-radius: 12px;
+    background: #102235;
+    box-shadow: 0 10px 30px rgba(0,0,0,.4);
+    display: none;
+    z-index: 9999;
+}
+
+.toast.show {
+    display: block;
+}
+
+.toast.call {
+    border: 2px solid #20d98a;
+}
+
+.toast.put {
+    border: 2px solid #ff4757;
+}
+
+.footer {
     text-align: center;
-    margin-top: 15px;
+    color: #71869b;
+    font-size: 12px;
+    margin-top: 25px;
 }
 
-@media (max-width: 800px) {
+@keyframes flashCall {
+    0%,100% { background:#07111f; }
+    50% { background:#063b2b; }
+}
 
-    .grid {
-        grid-template-columns: 1fr;
+@keyframes flashPut {
+    0%,100% { background:#07111f; }
+    50% { background:#420d14; }
+}
+
+body.flash-call {
+    animation: flashCall 1s;
+}
+
+body.flash-put {
+    animation: flashPut 1s;
+}
+
+@media(max-width:600px) {
+
+    .container {
+        padding: 10px;
     }
 
-    .full {
-        grid-column: auto;
+    h1 {
+        font-size: 22px;
+    }
+
+    .signal {
+        font-size: 34px;
     }
 
     canvas {
         height: 300px;
     }
 
-    .price {
-        font-size: 28px;
+    .history-item {
+        grid-template-columns: 65px 65px 1fr;
+        font-size: 12px;
     }
 }
 </style>
@@ -235,393 +267,838 @@ canvas {
 
 <header>
 
-    <h1>IQ Signal Engine</h1>
+<h1>📊 IQ Signal Engine V3.2</h1>
 
-    <p>
-        Live EURJPY-OTC Market Analysis
-    </p>
+<div class="subtitle">
+EURJPY-OTC • 1 Minute • Live Market Data
+</div>
 
-    <div class="status-row">
+<div class="topbar">
 
-        <div class="badge">
-            Asset:
-            <strong id="asset">EURJPY-OTC</strong>
-        </div>
+<button onclick="enableAlerts()">
+🔔 Enable Alerts
+</button>
 
-        <div class="badge">
-            Timeframe:
-            <strong>1 MIN</strong>
-        </div>
+<div id="alertStatus">
+Alerts: OFF
+</div>
 
-        <div class="badge">
-            Stream:
-            <strong id="streamStatus">CONNECTING...</strong>
-        </div>
-
-        <div class="badge">
-            Candles:
-            <strong id="candleCount">0</strong>
-        </div>
-
-    </div>
+</div>
 
 </header>
 
 
 <div class="grid">
 
-<!-- =====================================================
-     LIVE PRICE
-===================================================== -->
+<div class="card">
+
+<h2>💰 Live Price</h2>
+
+<div class="info-row">
+<span class="label">Asset</span>
+<span class="value" id="asset">---</span>
+</div>
+
+<div class="info-row">
+<span class="label">Price</span>
+<span class="value" id="price">---</span>
+</div>
+
+<div class="info-row">
+<span class="label">Candles</span>
+<span class="value" id="candles">---</span>
+</div>
+
+<div class="info-row">
+<span class="label">Stream</span>
+<span class="value" id="streamStatus">---</span>
+</div>
+
+</div>
+
 
 <div class="card">
 
-    <h2>Live Price</h2>
+<h2>📈 V2 Signal</h2>
 
-    <div class="price" id="price">
-        --
-    </div>
+<div id="v2Signal" class="signal wait">
+WAIT
+</div>
 
-    <div style="color:#819ab4;">
-        EURJPY-OTC
-    </div>
+<div class="info-row">
+<span class="label">Score</span>
+<span class="value" id="v2Score">---</span>
+</div>
+
+<div class="info-row">
+<span class="label">RSI</span>
+<span class="value" id="v2Rsi">---</span>
+</div>
 
 </div>
 
-
-<!-- =====================================================
-     V2
-===================================================== -->
 
 <div class="card">
 
-    <h2>V2 Signal Engine</h2>
+<h2>🧠 V3 Signal</h2>
 
-    <div id="v2Signal" class="signal wait">
-        WAIT
-    </div>
-
-    <div class="stats">
-
-        <div class="stat">
-            <div class="stat-label">
-                Score
-            </div>
-
-            <div class="stat-value" id="v2Score">
-                0/5
-            </div>
-        </div>
-
-        <div class="stat">
-            <div class="stat-label">
-                RSI
-            </div>
-
-            <div class="stat-value" id="v2RSI">
-                --
-            </div>
-        </div>
-
-        <div class="stat">
-            <div class="stat-label">
-                EMA 9
-            </div>
-
-            <div class="stat-value" id="v2EMA9">
-                --
-            </div>
-        </div>
-
-        <div class="stat">
-            <div class="stat-label">
-                EMA 21
-            </div>
-
-            <div class="stat-value" id="v2EMA21">
-                --
-            </div>
-        </div>
-
-    </div>
-
+<div id="v3Signal" class="signal wait">
+WAIT
 </div>
 
-
-<!-- =====================================================
-     V3
-===================================================== -->
-
-<div class="card v3-highlight">
-
-    <div class="v3-title">
-
-        <h2>
-            V3 Signal Engine
-        </h2>
-
-        <span class="v3-label">
-            NEW
-        </span>
-
-    </div>
-
-    <div id="v3Signal" class="signal wait">
-        WAIT
-    </div>
-
-    <div style="text-align:center; margin-bottom:15px;">
-
-        <div class="score" id="v3Score">
-            0/5
-        </div>
-
-        <div id="v3Confirmation"
-             class="waiting">
-
-            WAITING
-
-        </div>
-
-    </div>
-
-    <div class="stats">
-
-        <div class="stat">
-
-            <div class="stat-label">
-                Trend
-            </div>
-
-            <div class="stat-value"
-                 id="v3Trend">
-
-                --
-
-            </div>
-
-        </div>
-
-        <div class="stat">
-
-            <div class="stat-label">
-                RSI
-            </div>
-
-            <div class="stat-value"
-                 id="v3RSI">
-
-                --
-
-            </div>
-
-        </div>
-
-        <div class="stat">
-
-            <div class="stat-label">
-                Momentum
-            </div>
-
-            <div class="stat-value"
-                 id="v3Momentum">
-
-                --
-
-            </div>
-
-        </div>
-
-        <div class="stat">
-
-            <div class="stat-label">
-                Candle Strength
-            </div>
-
-            <div class="stat-value"
-                 id="v3Candle">
-
-                --
-
-            </div>
-
-        </div>
-
-        <div class="stat">
-
-            <div class="stat-label">
-                EMA Slope
-            </div>
-
-            <div class="stat-value"
-                 id="v3Slope">
-
-                --
-
-            </div>
-
-        </div>
-
-        <div class="stat">
-
-            <div class="stat-label">
-                Confirmed Candle
-            </div>
-
-            <div class="stat-value"
-                 id="v3Timestamp">
-
-                --
-
-            </div>
-
-        </div>
-
-    </div>
-
+<div class="info-row">
+<span class="label">Score</span>
+<span class="value" id="v3Score">---</span>
 </div>
 
-
-<!-- =====================================================
-     CHART
-===================================================== -->
-
-<div class="card full">
-
-    <h2>
-        Live Candlestick Chart
-    </h2>
-
-    <canvas id="chart"></canvas>
-
+<div class="info-row">
+<span class="label">Trend</span>
+<span class="value" id="v3Trend">---</span>
 </div>
 
+<div class="info-row">
+<span class="label">RSI</span>
+<span class="value" id="v3Rsi">---</span>
+</div>
 
-<!-- =====================================================
-     HISTORY
-===================================================== -->
+<div class="info-row">
+<span class="label">Momentum</span>
+<span class="value" id="v3Momentum">---</span>
+</div>
 
-<div class="card full">
+<div class="info-row">
+<span class="label">Candle Strength</span>
+<span class="value" id="v3Candle">---</span>
+</div>
 
-    <h2>
-        V3 Signal History
-    </h2>
+<div class="info-row">
+<span class="label">EMA Slope</span>
+<span class="value" id="v3Slope">---</span>
+</div>
 
-    <div id="history"
-         class="history">
-
-        Waiting for signals...
-
-    </div>
+<div class="info-row">
+<span class="label">Confirmation</span>
+<span class="value" id="v3Confirmation">---</span>
+</div>
 
 </div>
 
 </div>
 
 
-<div class="disclaimer">
+<div class="card">
 
-    This system provides technical market analysis only.
-    Signals are not guaranteed outcomes.
-    Test with a practice/demo account before considering
-    any real-money use.
+<h2>🕯️ Live Candlestick Chart</h2>
+
+<div class="chart-box">
+<canvas id="chart"></canvas>
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>🕐 Latest Decision</h2>
+
+<div class="info-row">
+<span class="label">Decision ID</span>
+<span class="value" id="decisionId">---</span>
+</div>
+
+<div class="info-row">
+<span class="label">Previous Signal</span>
+<span class="value" id="previousSignal">---</span>
+</div>
+
+<div class="info-row">
+<span class="label">Current Signal</span>
+<span class="value" id="currentSignal">---</span>
+</div>
+
+<div class="info-row">
+<span class="label">New Decision</span>
+<span class="value" id="newDecision">---</span>
+</div>
+
+<div class="info-row">
+<span class="label">Signal Changed</span>
+<span class="value" id="signalChanged">---</span>
+</div>
+
+<div class="info-row">
+<span class="label">Decision Candle</span>
+<span class="value" id="decisionCandle">---</span>
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>📋 V3 Decision History</h2>
+
+<div id="history" class="history">
+No decisions yet.
+</div>
+
+</div>
+
+
+<div class="card alert-box">
+
+<h2>🔔 Alert History</h2>
+
+<div id="alertHistory" class="history">
+No CALL/PUT alerts yet.
+</div>
+
+</div>
+
+
+<div class="footer">
+
+V3.2 Live Signal Engine — Signals are informational and are not guarantees of trading outcomes.
 
 </div>
 
 </div>
+
+
+<div id="toast" class="toast"></div>
 
 
 <script>
 
-/* ========================================================
-   BACKEND
-======================================================== */
-
 const API_URL =
-    "https://iqsignalengine-backend.onrender.com";
+"https://iqsignalengine-backend.onrender.com";
 
-
-/* ========================================================
-   STATE
-======================================================== */
 
 let candles = [];
 
-let history = [];
+let decisionHistory = [];
 
-let lastV3Timestamp = null;
+let alertHistory = [];
+
+let lastDecisionId = null;
+
+let alertsInitialized = false;
+
+let audioContext = null;
+
+let alertsEnabled = false;
 
 
-/* ========================================================
-   HELPERS
-======================================================== */
+/* =========================
+   ALERT SYSTEM
+========================= */
 
-function formatNumber(value, decimals = 6) {
+async function enableAlerts() {
 
-    if (value === undefined ||
-        value === null ||
-        isNaN(value)) {
+    try {
 
-        return "--";
+        const AudioContext =
+            window.AudioContext ||
+            window.webkitAudioContext;
+
+        if (AudioContext) {
+
+            audioContext = new AudioContext();
+
+            await audioContext.resume();
+
+        }
+
+        if ("Notification" in window) {
+
+            if (Notification.permission === "default") {
+
+                await Notification.requestPermission();
+
+            }
+
+        }
+
+        alertsEnabled = true;
+
+        document.getElementById("alertStatus").textContent =
+            "Alerts: ON 🔔";
 
     }
 
-    return Number(value).toFixed(decimals);
+    catch(error) {
+
+        console.error("Alert enable error:", error);
+
+        alertsEnabled = true;
+
+        document.getElementById("alertStatus").textContent =
+            "Alerts: ON";
+
+    }
+
 }
 
 
-function signalClass(signal) {
+/* =========================
+   SOUND
+========================= */
 
-    if (signal === "CALL") {
-        return "call";
+function playAlertSound(signal) {
+
+    if (!audioContext) return;
+
+    try {
+
+        const oscillator =
+            audioContext.createOscillator();
+
+        const gain =
+            audioContext.createGain();
+
+        oscillator.connect(gain);
+
+        gain.connect(audioContext.destination);
+
+        if (signal === "CALL") {
+
+            oscillator.frequency.value = 880;
+
+        } else {
+
+            oscillator.frequency.value = 440;
+
+        }
+
+        oscillator.type = "sine";
+
+        gain.gain.setValueAtTime(
+            0.001,
+            audioContext.currentTime
+        );
+
+        gain.gain.exponentialRampToValueAtTime(
+            0.25,
+            audioContext.currentTime + 0.03
+        );
+
+        gain.gain.exponentialRampToValueAtTime(
+            0.001,
+            audioContext.currentTime + 0.6
+        );
+
+        oscillator.start();
+
+        oscillator.stop(
+            audioContext.currentTime + 0.6
+        );
+
     }
 
-    if (signal === "PUT") {
-        return "put";
+    catch(error) {
+
+        console.error("Sound error:", error);
+
     }
 
-    return "wait";
 }
 
+
+/* =========================
+   BROWSER NOTIFICATION
+========================= */
+
+function sendNotification(signal, data) {
+
+    if (
+        !alertsEnabled ||
+        !("Notification" in window)
+    ) {
+        return;
+    }
+
+    if (Notification.permission !== "granted") {
+        return;
+    }
+
+    try {
+
+        const title =
+            signal === "CALL"
+            ? "🟢 NEW CALL SIGNAL"
+            : "🔴 NEW PUT SIGNAL";
+
+        const message =
+            `${data.score || "---"} • ` +
+            `${data.trend || "---"} • ` +
+            `${data.confirmation || "---"}`;
+
+        new Notification(title, {
+            body: message
+        });
+
+    }
+
+    catch(error) {
+
+        console.error(
+            "Notification error:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================
+   TOAST
+========================= */
+
+function showToast(signal, data) {
+
+    const toast =
+        document.getElementById("toast");
+
+    toast.className =
+        "toast show " +
+        signal.toLowerCase();
+
+    toast.innerHTML = `
+
+        <strong>
+        ${signal === "CALL"
+            ? "🟢 NEW CALL SIGNAL"
+            : "🔴 NEW PUT SIGNAL"}
+        </strong>
+
+        <br><br>
+
+        Score:
+        ${data.score || "---"}
+
+        <br>
+
+        Trend:
+        ${data.trend || "---"}
+
+        <br>
+
+        Confirmation:
+        ${data.confirmation || "---"}
+
+    `;
+
+    setTimeout(() => {
+
+        toast.className = "toast";
+
+    }, 5000);
+
+}
+
+
+/* =========================
+   VISUAL ALERT
+========================= */
+
+function flashScreen(signal) {
+
+    document.body.classList.remove(
+        "flash-call",
+        "flash-put"
+    );
+
+    void document.body.offsetWidth;
+
+    document.body.classList.add(
+        signal === "CALL"
+        ? "flash-call"
+        : "flash-put"
+    );
+
+}
+
+
+/* =========================
+   CREATE ALERT
+========================= */
+
+function triggerAlert(signal, data) {
+
+    if (
+        signal !== "CALL" &&
+        signal !== "PUT"
+    ) {
+        return;
+    }
+
+    if (!alertsEnabled) {
+        return;
+    }
+
+    playAlertSound(signal);
+
+    sendNotification(signal, data);
+
+    showToast(signal, data);
+
+    flashScreen(signal);
+
+    addAlertHistory(signal, data);
+
+}
+
+
+/* =========================
+   ALERT HISTORY
+========================= */
+
+function addAlertHistory(signal, data) {
+
+    const time =
+        new Date().toLocaleTimeString();
+
+    alertHistory.unshift({
+
+        time: time,
+
+        signal: signal,
+
+        score: data.score || "---",
+
+        trend: data.trend || "---",
+
+        confirmation:
+            data.confirmation || "---",
+
+        decisionId:
+            data.decision_id || "?"
+
+    });
+
+    if (alertHistory.length > 20) {
+
+        alertHistory =
+            alertHistory.slice(0,20);
+
+    }
+
+    renderAlertHistory();
+
+}
+
+
+function renderAlertHistory() {
+
+    const box =
+        document.getElementById(
+            "alertHistory"
+        );
+
+    if (!alertHistory.length) {
+
+        box.innerHTML =
+            "No CALL/PUT alerts yet.";
+
+        return;
+
+    }
+
+    box.innerHTML =
+        alertHistory.map(item => {
+
+            const cls =
+                item.signal === "CALL"
+                ? "alert-call"
+                : "alert-put";
+
+            return `
+
+            <div class="alert-item ${cls}">
+
+                <strong>
+                    ${item.signal === "CALL"
+                        ? "🟢 CALL"
+                        : "🔴 PUT"}
+                </strong>
+
+                <br>
+
+                Time:
+                ${item.time}
+
+                <br>
+
+                Score:
+                ${item.score}
+
+                <br>
+
+                Trend:
+                ${item.trend}
+
+                <br>
+
+                Confirmation:
+                ${item.confirmation}
+
+                <br>
+
+                Decision ID:
+                ${item.decisionId}
+
+            </div>
+
+            `;
+
+        }).join("");
+
+}
+
+
+/* =========================
+   SIGNAL STYLE
+========================= */
 
 function setSignal(elementId, signal) {
 
-    const element =
+    const el =
         document.getElementById(elementId);
 
-    element.className =
-        "signal " + signalClass(signal);
+    el.textContent = signal;
 
-    element.textContent =
-        signal || "WAIT";
-}
+    el.className = "signal";
 
+    if (signal === "CALL") {
 
-function formatTime(timestamp) {
+        el.classList.add("call");
 
-    if (!timestamp) {
-        return "--";
     }
 
-    const date =
-        new Date(timestamp * 1000);
+    else if (signal === "PUT") {
 
-    return date.toLocaleTimeString(
-        [],
-        {
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit"
-        }
-    );
+        el.classList.add("put");
+
+    }
+
+    else {
+
+        el.classList.add("wait");
+
+    }
+
 }
 
 
-/* ========================================================
-   FETCH V2
-======================================================== */
+/* =========================
+   V3 EVENT
+========================= */
 
-async function fetchV2() {
+async function fetchV3Event() {
+
+    try {
+
+        const response =
+            await fetch(
+                API_URL + "/v3-event"
+            );
+
+        if (!response.ok) {
+
+            throw new Error(
+                "V3 event request failed"
+            );
+
+        }
+
+        const data =
+            await response.json();
+
+        const event =
+            data.event || {};
+
+        const signal =
+            data.signal || {};
+
+        /* Basic information */
+
+        document.getElementById("asset")
+            .textContent =
+            data.asset || "---";
+
+        document.getElementById("price")
+            .textContent =
+            signal.price ?? "---";
+
+        document.getElementById("candles")
+            .textContent =
+            signal.candles_available ??
+            data.candles_available ??
+            "---";
+
+        document.getElementById("streamStatus")
+            .textContent =
+            "STREAMING";
+
+        /* V3 */
+
+        setSignal(
+            "v3Signal",
+            signal.signal || "WAIT"
+        );
+
+        document.getElementById("v3Score")
+            .textContent =
+            signal.score || "---";
+
+        document.getElementById("v3Trend")
+            .textContent =
+            signal.trend || "---";
+
+        document.getElementById("v3Rsi")
+            .textContent =
+            signal.rsi ?? "---";
+
+        document.getElementById("v3Momentum")
+            .textContent =
+            signal.momentum || "---";
+
+        document.getElementById("v3Candle")
+            .textContent =
+            signal.candle_strength || "---";
+
+        document.getElementById("v3Slope")
+            .textContent =
+            signal.ema_slope || "---";
+
+        document.getElementById("v3Confirmation")
+            .textContent =
+            signal.confirmation || "---";
+
+
+        /* Event */
+
+        document.getElementById("decisionId")
+            .textContent =
+            event.decision_id ?? "---";
+
+        document.getElementById("previousSignal")
+            .textContent =
+            event.previous_signal || "---";
+
+        document.getElementById("currentSignal")
+            .textContent =
+            event.signal || "---";
+
+        document.getElementById("newDecision")
+            .textContent =
+            event.new_decision
+            ? "YES"
+            : "NO";
+
+        document.getElementById("signalChanged")
+            .textContent =
+            event.signal_changed
+            ? "YES"
+            : "NO";
+
+        document.getElementById("decisionCandle")
+            .textContent =
+            event.decision_candle
+            ? new Date(
+                event.decision_candle * 1000
+              ).toLocaleTimeString()
+            : "---";
+
+
+        /*
+         IMPORTANT:
+         Do NOT alert the first time
+         the page sees the current decision.
+        */
+
+        if (!alertsInitialized) {
+
+            lastDecisionId =
+                event.decision_id;
+
+            alertsInitialized = true;
+
+        }
+
+        else {
+
+            const isNewDecision =
+                event.new_decision === true;
+
+            const newDecisionId =
+                event.decision_id !==
+                lastDecisionId;
+
+            if (
+                isNewDecision &&
+                newDecisionId
+            ) {
+
+                lastDecisionId =
+                    event.decision_id;
+
+                const newSignal =
+                    event.signal;
+
+                if (
+                    newSignal === "CALL" ||
+                    newSignal === "PUT"
+                ) {
+
+                    triggerAlert(
+                        newSignal,
+                        {
+                            score:
+                                signal.score,
+
+                            trend:
+                                signal.trend,
+
+                            confirmation:
+                                signal.confirmation,
+
+                            decision_id:
+                                event.decision_id
+                        }
+                    );
+
+                }
+
+            }
+
+        }
+
+    }
+
+    catch(error) {
+
+        console.error(
+            "V3 event error:",
+            error
+        );
+
+        document.getElementById(
+            "streamStatus"
+        ).textContent =
+            "CONNECTION ERROR";
+
+    }
+
+}
+
+
+/* =========================
+   V2 SIGNAL
+========================= */
+
+async function fetchV2Signal() {
 
     try {
 
@@ -630,320 +1107,44 @@ async function fetchV2() {
                 API_URL + "/live-signal"
             );
 
-        if (!response.ok) {
-            throw new Error("V2 request failed");
-        }
+        if (!response.ok) return;
 
         const data =
             await response.json();
 
         const signal =
-            data.signal;
-
-        document.getElementById(
-            "price"
-        ).textContent =
-            formatNumber(signal.price);
-
-        document.getElementById(
-            "v2Score"
-        ).textContent =
-            signal.score;
-
-        document.getElementById(
-            "v2RSI"
-        ).textContent =
-            formatNumber(signal.rsi, 2);
-
-        document.getElementById(
-            "v2EMA9"
-        ).textContent =
-            formatNumber(signal.ema9);
-
-        document.getElementById(
-            "v2EMA21"
-        ).textContent =
-            formatNumber(signal.ema21);
+            data.signal || {};
 
         setSignal(
             "v2Signal",
-            signal.signal
+            signal.signal || "WAIT"
         );
 
-        document.getElementById(
-            "streamStatus"
-        ).textContent =
-            data.stream.status.toUpperCase();
+        document.getElementById("v2Score")
+            .textContent =
+            signal.score || "---";
 
-        if (data.stream.status === "streaming") {
+        document.getElementById("v2Rsi")
+            .textContent =
+            signal.rsi ?? "---";
 
-            document.getElementById(
-                "streamStatus"
-            ).className = "live";
+    }
 
-        } else {
-
-            document.getElementById(
-                "streamStatus"
-            ).className = "offline";
-
-        }
-
-        document.getElementById(
-            "candleCount"
-        ).textContent =
-            data.candles_available;
-
-    } catch (error) {
+    catch(error) {
 
         console.error(
             "V2 error:",
             error
         );
 
-        document.getElementById(
-            "streamStatus"
-        ).textContent =
-            "OFFLINE";
-
-        document.getElementById(
-            "streamStatus"
-        ).className =
-            "offline";
     }
-}
-
-
-/* ========================================================
-   FETCH V3
-======================================================== */
-
-async function fetchV3() {
-
-    try {
-
-        const response =
-            await fetch(
-                API_URL + "/v3-signal"
-            );
-
-        if (!response.ok) {
-            throw new Error("V3 request failed");
-        }
-
-        const data =
-            await response.json();
-
-        const signal =
-            data.signal;
-
-        /* Main V3 signal */
-
-        setSignal(
-            "v3Signal",
-            signal.signal
-        );
-
-
-        /* Score */
-
-        document.getElementById(
-            "v3Score"
-        ).textContent =
-            signal.score;
-
-
-        /* Confirmation */
-
-        const confirmation =
-            document.getElementById(
-                "v3Confirmation"
-            );
-
-        confirmation.textContent =
-            signal.confirmation;
-
-        if (
-            signal.confirmation ===
-            "CONFIRMED"
-        ) {
-
-            confirmation.className =
-                "confirmed";
-
-        } else {
-
-            confirmation.className =
-                "waiting";
-
-        }
-
-
-        /* Trend */
-
-        document.getElementById(
-            "v3Trend"
-        ).textContent =
-            signal.trend;
-
-
-        /* RSI */
-
-        document.getElementById(
-            "v3RSI"
-        ).textContent =
-            formatNumber(
-                signal.rsi,
-                2
-            );
-
-
-        /* Momentum */
-
-        document.getElementById(
-            "v3Momentum"
-        ).textContent =
-            signal.momentum;
-
-
-        /* Candle strength */
-
-        document.getElementById(
-            "v3Candle"
-        ).textContent =
-            signal.candle_strength;
-
-
-        /* EMA slope */
-
-        document.getElementById(
-            "v3Slope"
-        ).textContent =
-            signal.ema_slope;
-
-
-        /* Confirmed candle */
-
-        document.getElementById(
-            "v3Timestamp"
-        ).textContent =
-            formatTime(
-                signal.candle_timestamp
-            );
-
-
-        /* ------------------------------------------------
-           ADD HISTORY ONLY WHEN A NEW DECISION CANDLE
-           APPEARS
-        ------------------------------------------------ */
-
-        if (
-            signal.candle_timestamp &&
-            signal.candle_timestamp !==
-            lastV3Timestamp
-        ) {
-
-            lastV3Timestamp =
-                signal.candle_timestamp;
-
-            addHistory(signal);
-
-        }
-
-    } catch (error) {
-
-        console.error(
-            "V3 error:",
-            error
-        );
-
-    }
-}
-
-
-/* ========================================================
-   HISTORY
-======================================================== */
-
-function addHistory(signal) {
-
-    history.unshift({
-
-        signal:
-            signal.signal,
-
-        score:
-            signal.score,
-
-        trend:
-            signal.trend,
-
-        time:
-            formatTime(
-                signal.candle_timestamp
-            )
-
-    });
-
-    if (history.length > 30) {
-
-        history =
-            history.slice(0, 30);
-
-    }
-
-    renderHistory();
-}
-
-
-function renderHistory() {
-
-    const container =
-        document.getElementById(
-            "history"
-        );
-
-    if (history.length === 0) {
-
-        container.innerHTML =
-            "Waiting for signals...";
-
-        return;
-    }
-
-    container.innerHTML =
-        history.map(item => {
-
-            return `
-                <div class="history-row">
-
-                    <strong>
-                        ${item.signal}
-                    </strong>
-
-                    <span>
-                        ${item.score}
-                    </span>
-
-                    <span>
-                        ${item.trend}
-                    </span>
-
-                    <span>
-                        ${item.time}
-                    </span>
-
-                </div>
-            `;
-
-        }).join("");
 
 }
 
 
-/* ========================================================
-   FETCH CANDLES
-======================================================== */
+/* =========================
+   LIVE CANDLES
+========================= */
 
 async function fetchCandles() {
 
@@ -954,11 +1155,7 @@ async function fetchCandles() {
                 API_URL + "/live-candles"
             );
 
-        if (!response.ok) {
-            throw new Error(
-                "Candle request failed"
-            );
-        }
+        if (!response.ok) return;
 
         const data =
             await response.json();
@@ -966,14 +1163,11 @@ async function fetchCandles() {
         candles =
             data.candles || [];
 
-        document.getElementById(
-            "candleCount"
-        ).textContent =
-            candles.length;
-
         drawChart();
 
-    } catch (error) {
+    }
+
+    catch(error) {
 
         console.error(
             "Candle error:",
@@ -981,19 +1175,18 @@ async function fetchCandles() {
         );
 
     }
+
 }
 
 
-/* ========================================================
-   CANDLESTICK CHART
-======================================================== */
+/* =========================
+   CANDLE CHART
+========================= */
 
 function drawChart() {
 
     const canvas =
-        document.getElementById(
-            "chart"
-        );
+        document.getElementById("chart");
 
     const ctx =
         canvas.getContext("2d");
@@ -1010,7 +1203,7 @@ function drawChart() {
     canvas.height =
         rect.height * dpr;
 
-    ctx.scale(dpr, dpr);
+    ctx.scale(dpr,dpr);
 
     const width =
         rect.width;
@@ -1025,257 +1218,254 @@ function drawChart() {
         height
     );
 
-
-    if (!candles.length) {
-        return;
-    }
+    if (!candles.length) return;
 
 
     const visible =
-        candles.slice(-70);
+        candles.slice(-50);
 
+    let minPrice =
+        Infinity;
 
-    let min =
-        Math.min(
-            ...visible.map(c => c.low)
-        );
+    let maxPrice =
+        -Infinity;
 
-    let max =
-        Math.max(
-            ...visible.map(c => c.high)
-        );
+    visible.forEach(c => {
+
+        minPrice =
+            Math.min(
+                minPrice,
+                Number(c.low)
+            );
+
+        maxPrice =
+            Math.max(
+                maxPrice,
+                Number(c.high)
+            );
+
+    });
 
 
     const padding =
-        30;
+        25;
 
     const chartHeight =
-        height - 2 * padding;
+        height - padding * 2;
 
     const chartWidth =
-        width - 2 * padding;
-
-
-    const range =
-        max - min || 1;
-
-
-    /* GRID */
-
-    ctx.strokeStyle =
-        "#17304a";
-
-    ctx.lineWidth = 1;
-
-    for (
-        let i = 0;
-        i <= 5;
-        i++
-    ) {
-
-        const y =
-            padding +
-            (chartHeight / 5) * i;
-
-        ctx.beginPath();
-
-        ctx.moveTo(
-            padding,
-            y
-        );
-
-        ctx.lineTo(
-            width - padding,
-            y
-        );
-
-        ctx.stroke();
-
-    }
-
-
-    /* CANDLES */
+        width - padding * 2;
 
     const step =
         chartWidth / visible.length;
 
-    const bodyWidth =
-        Math.max(
-            3,
-            step * 0.55
+    const range =
+        maxPrice - minPrice || 1;
+
+
+    function y(price) {
+
+        return (
+            padding +
+            (maxPrice - price)
+            / range *
+            chartHeight
         );
 
-
-    visible.forEach(
-        (candle, index) => {
-
-            const x =
-                padding +
-                index * step +
-                step / 2;
+    }
 
 
-            const highY =
-                padding +
-                ((max - candle.high) /
-                range) *
-                chartHeight;
+    visible.forEach((c,i) => {
 
+        const open =
+            Number(c.open);
 
-            const lowY =
-                padding +
-                ((max - candle.low) /
-                range) *
-                chartHeight;
+        const close =
+            Number(c.close);
 
+        const high =
+            Number(c.high);
 
-            const openY =
-                padding +
-                ((max - candle.open) /
-                range) *
-                chartHeight;
+        const low =
+            Number(c.low);
 
+        const x =
+            padding +
+            i * step +
+            step / 2;
 
-            const closeY =
-                padding +
-                ((max - candle.close) /
-                range) *
-                chartHeight;
+        const up =
+            close >= open;
 
+        const bodyTop =
+            y(Math.max(open,close));
 
-            const bullish =
-                candle.close >=
-                candle.open;
+        const bodyBottom =
+            y(Math.min(open,close));
 
-
-            /* WICK */
-
-            ctx.strokeStyle =
-                bullish
-                    ? "#39e58c"
-                    : "#ff6578";
-
-            ctx.lineWidth = 1;
-
-            ctx.beginPath();
-
-            ctx.moveTo(
-                x,
-                highY
+        const bodyHeight =
+            Math.max(
+                1,
+                bodyBottom - bodyTop
             );
 
-            ctx.lineTo(
-                x,
-                lowY
-            );
 
-            ctx.stroke();
+        ctx.beginPath();
 
+        ctx.moveTo(
+            x,
+            y(high)
+        );
 
-            /* BODY */
+        ctx.lineTo(
+            x,
+            y(low)
+        );
 
-            const top =
-                Math.min(
-                    openY,
-                    closeY
-                );
+        ctx.strokeStyle =
+            up
+            ? "#35e69a"
+            : "#ff5263";
 
-            const bodyHeight =
-                Math.max(
-                    2,
-                    Math.abs(
-                        closeY -
-                        openY
-                    )
-                );
+        ctx.stroke();
 
 
-            ctx.fillStyle =
-                bullish
-                    ? "#39e58c"
-                    : "#ff6578";
+        ctx.fillStyle =
+            up
+            ? "#35e69a"
+            : "#ff5263";
 
+        ctx.fillRect(
+            x - step * .3,
+            bodyTop,
+            step * .6,
+            bodyHeight
+        );
 
-            ctx.fillRect(
-                x - bodyWidth / 2,
-                top,
-                bodyWidth,
-                bodyHeight
-            );
-
-        }
-    );
-
-
-    /* CURRENT PRICE LINE */
-
-    const current =
-        visible[visible.length - 1];
-
-    const priceY =
-        padding +
-        ((max - current.close) /
-        range) *
-        chartHeight;
-
-
-    ctx.strokeStyle =
-        "#ffc44d";
-
-    ctx.setLineDash([
-        5,
-        5
-    ]);
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-        padding,
-        priceY
-    );
-
-    ctx.lineTo(
-        width - padding,
-        priceY
-    );
-
-    ctx.stroke();
-
-    ctx.setLineDash([]);
+    });
 
 }
 
 
-/* ========================================================
-   MAIN UPDATE LOOP
-======================================================== */
+/* =========================
+   DECISION HISTORY
+========================= */
 
-async function updateDashboard() {
+function addDecisionHistory(signal) {
+
+    if (!signal.signal) return;
+
+    const time =
+        new Date()
+        .toLocaleTimeString();
+
+    decisionHistory.unshift({
+
+        time: time,
+
+        signal:
+            signal.signal,
+
+        score:
+            signal.score || "---",
+
+        confirmation:
+            signal.confirmation || "---"
+
+    });
+
+    if (decisionHistory.length > 20) {
+
+        decisionHistory =
+            decisionHistory.slice(0,20);
+
+    }
+
+    renderDecisionHistory();
+
+}
+
+
+function renderDecisionHistory() {
+
+    const box =
+        document.getElementById(
+            "history"
+        );
+
+    if (!decisionHistory.length) {
+
+        box.innerHTML =
+            "No decisions yet.";
+
+        return;
+
+    }
+
+    box.innerHTML =
+        decisionHistory.map(item => {
+
+            let cls =
+                "history-wait";
+
+            if (item.signal === "CALL")
+                cls = "history-call";
+
+            if (item.signal === "PUT")
+                cls = "history-put";
+
+            return `
+
+            <div class="history-item">
+
+                <strong class="${cls}">
+                    ${item.signal}
+                </strong>
+
+                <span>
+                    ${item.score}
+                </span>
+
+                <span>
+                    ${item.time}
+                    <br>
+                    ${item.confirmation}
+                </span>
+
+            </div>
+
+            `;
+
+        }).join("");
+
+}
+
+
+/* =========================
+   MAIN UPDATE
+========================= */
+
+async function updateAll() {
 
     await Promise.all([
-
-        fetchV2(),
-
-        fetchV3(),
-
+        fetchV3Event(),
+        fetchV2Signal(),
         fetchCandles()
-
     ]);
 
 }
 
 
-/* ========================================================
+/* =========================
    START
-======================================================== */
+========================= */
 
-updateDashboard();
+updateAll();
 
 setInterval(
-    updateDashboard,
+    updateAll,
     2000
 );
-
 
 window.addEventListener(
     "resize",
