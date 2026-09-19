@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>IQ Signal Engine V3.2</title>
+<title>IQ Signal Engine V3.3</title>
 
 <style>
 * {
@@ -16,23 +16,30 @@ body {
     font-family: Arial, sans-serif;
     background: #07111f;
     color: white;
+    transition: background .3s;
 }
 
 .container {
     max-width: 1100px;
     margin: auto;
-    padding: 20px;
+    padding: 15px;
 }
 
-header {
+header,
+.card {
     background: #0d1b2a;
-    padding: 20px;
     border-radius: 15px;
-    margin-bottom: 20px;
+    padding: 18px;
+    margin-bottom: 15px;
 }
 
 h1 {
-    margin: 0 0 8px;
+    margin: 0 0 7px;
+    font-size: 25px;
+}
+
+h2 {
+    margin-top: 0;
 }
 
 .subtitle {
@@ -48,19 +55,15 @@ h1 {
 
 button {
     border: none;
-    padding: 12px 18px;
     border-radius: 10px;
-    cursor: pointer;
-    font-weight: bold;
+    padding: 12px 17px;
     background: #1d8cff;
     color: white;
+    font-weight: bold;
+    cursor: pointer;
 }
 
-button:hover {
-    opacity: .9;
-}
-
-#alertStatus {
+.status {
     padding: 12px 15px;
     border-radius: 10px;
     background: #162536;
@@ -72,19 +75,29 @@ button:hover {
     gap: 15px;
 }
 
-.card {
-    background: #0d1b2a;
-    border-radius: 15px;
-    padding: 18px;
-    margin-bottom: 15px;
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 9px 0;
+    border-bottom: 1px solid #203247;
 }
 
-.card h2 {
-    margin-top: 0;
+.info-row:last-child {
+    border-bottom: 0;
+}
+
+.label {
+    color: #9fb3c8;
+}
+
+.value {
+    font-weight: bold;
+    text-align: right;
 }
 
 .signal {
-    font-size: 42px;
+    font-size: 40px;
     font-weight: bold;
     text-align: center;
     padding: 20px;
@@ -107,23 +120,53 @@ button:hover {
     color: #ffd84d;
 }
 
-.info-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 9px 0;
-    border-bottom: 1px solid #203247;
+/* TIMER */
+
+.timer-card {
+    text-align: center;
 }
 
-.info-row:last-child {
-    border-bottom: none;
-}
-
-.label {
+.timer-label {
     color: #9fb3c8;
+    font-size: 14px;
 }
 
-.value {
+.countdown {
+    font-size: 58px;
     font-weight: bold;
+    margin: 10px 0;
+}
+
+.countdown.warning {
+    color: #ffd84d;
+}
+
+.countdown.critical {
+    color: #ff6b7a;
+}
+
+.timer-status {
+    display: inline-block;
+    padding: 8px 14px;
+    border-radius: 20px;
+    background: #162536;
+    font-weight: bold;
+}
+
+.entry-box {
+    padding: 15px;
+    border-radius: 12px;
+    background: #111f2e;
+    text-align: center;
+    margin-top: 12px;
+}
+
+.entry-ready {
+    border: 2px solid #50ffb1;
+}
+
+.entry-wait {
+    border: 2px solid #ffd84d;
 }
 
 .chart-box {
@@ -132,6 +175,7 @@ button:hover {
 }
 
 canvas {
+    display: block;
     width: 100%;
     height: 380px;
     background: #081522;
@@ -145,13 +189,13 @@ canvas {
 
 .history-item {
     display: grid;
-    grid-template-columns: 80px 80px 1fr;
+    grid-template-columns: 75px 75px 1fr;
     gap: 10px;
-    align-items: center;
     padding: 10px;
     margin-bottom: 8px;
-    background: #111f2e;
     border-radius: 8px;
+    background: #111f2e;
+    font-size: 13px;
 }
 
 .history-call {
@@ -164,10 +208,6 @@ canvas {
 
 .history-wait {
     color: #ffd84d;
-}
-
-.alert-box {
-    border: 1px solid #253b52;
 }
 
 .alert-item {
@@ -188,12 +228,12 @@ canvas {
 .toast {
     position: fixed;
     top: 20px;
-    right: 20px;
+    right: 15px;
     width: 300px;
     padding: 18px;
     border-radius: 12px;
     background: #102235;
-    box-shadow: 0 10px 30px rgba(0,0,0,.4);
+    box-shadow: 0 10px 30px rgba(0,0,0,.5);
     display: none;
     z-index: 9999;
 }
@@ -214,7 +254,7 @@ canvas {
     text-align: center;
     color: #71869b;
     font-size: 12px;
-    margin-top: 25px;
+    margin: 25px 0;
 }
 
 @keyframes flashCall {
@@ -242,7 +282,11 @@ body.flash-put {
     }
 
     h1 {
-        font-size: 22px;
+        font-size: 21px;
+    }
+
+    .countdown {
+        font-size: 48px;
     }
 
     .signal {
@@ -254,7 +298,7 @@ body.flash-put {
     }
 
     .history-item {
-        grid-template-columns: 65px 65px 1fr;
+        grid-template-columns: 60px 60px 1fr;
         font-size: 12px;
     }
 }
@@ -267,7 +311,7 @@ body.flash-put {
 
 <header>
 
-<h1>📊 IQ Signal Engine V3.2</h1>
+<h1>📊 IQ Signal Engine V3.3</h1>
 
 <div class="subtitle">
 EURJPY-OTC • 1 Minute • Live Market Data
@@ -279,7 +323,7 @@ EURJPY-OTC • 1 Minute • Live Market Data
 🔔 Enable Alerts
 </button>
 
-<div id="alertStatus">
+<div id="alertStatus" class="status">
 Alerts: OFF
 </div>
 
@@ -287,6 +331,43 @@ Alerts: OFF
 
 </header>
 
+
+<!-- ================= TIMER ================= -->
+
+<div class="card timer-card">
+
+<h2>⏱️ Candle Countdown</h2>
+
+<div class="timer-label">
+TIME REMAINING IN CURRENT 1-MINUTE CANDLE
+</div>
+
+<div id="countdown" class="countdown">
+--:--
+</div>
+
+<div id="candleStatus" class="timer-status">
+CONNECTING...
+</div>
+
+<div class="entry-box entry-wait" id="entryBox">
+
+<strong id="entryTitle">
+WAITING FOR MARKET DATA
+</strong>
+
+<br><br>
+
+<span id="entryDescription">
+The next decision will be generated when the current candle completes.
+</span>
+
+</div>
+
+</div>
+
+
+<!-- ================= MAIN DATA ================= -->
 
 <div class="grid">
 
@@ -311,7 +392,9 @@ Alerts: OFF
 
 <div class="info-row">
 <span class="label">Stream</span>
-<span class="value" id="streamStatus">---</span>
+<span class="value" id="streamStatus">
+CONNECTING
+</span>
 </div>
 
 </div>
@@ -386,57 +469,84 @@ WAIT
 </div>
 
 
+<!-- ================= DECISION TIMING ================= -->
+
+<div class="card">
+
+<h2>🎯 Decision Timing</h2>
+
+<div class="info-row">
+<span class="label">Last Completed Candle</span>
+<span class="value" id="lastCompletedCandle">
+---
+</span>
+</div>
+
+<div class="info-row">
+<span class="label">Last Decision ID</span>
+<span class="value" id="decisionId">
+---
+</span>
+</div>
+
+<div class="info-row">
+<span class="label">Last Decision Signal</span>
+<span class="value" id="currentSignal">
+---
+</span>
+</div>
+
+<div class="info-row">
+<span class="label">Previous Signal</span>
+<span class="value" id="previousSignal">
+---
+</span>
+</div>
+
+<div class="info-row">
+<span class="label">New Decision</span>
+<span class="value" id="newDecision">
+---
+</span>
+</div>
+
+<div class="info-row">
+<span class="label">Signal Changed</span>
+<span class="value" id="signalChanged">
+---
+</span>
+</div>
+
+<div class="info-row">
+<span class="label">Next Decision</span>
+<span class="value" id="nextDecision">
+---
+</span>
+</div>
+
+</div>
+
+
+<!-- ================= CHART ================= -->
+
 <div class="card">
 
 <h2>🕯️ Live Candlestick Chart</h2>
 
 <div class="chart-box">
+
 <canvas id="chart"></canvas>
-</div>
 
 </div>
 
+</div>
+
+
+<!-- ================= DECISION HISTORY ================= -->
 
 <div class="card">
 
-<h2>🕐 Latest Decision</h2>
-
-<div class="info-row">
-<span class="label">Decision ID</span>
-<span class="value" id="decisionId">---</span>
-</div>
-
-<div class="info-row">
-<span class="label">Previous Signal</span>
-<span class="value" id="previousSignal">---</span>
-</div>
-
-<div class="info-row">
-<span class="label">Current Signal</span>
-<span class="value" id="currentSignal">---</span>
-</div>
-
-<div class="info-row">
-<span class="label">New Decision</span>
-<span class="value" id="newDecision">---</span>
-</div>
-
-<div class="info-row">
-<span class="label">Signal Changed</span>
-<span class="value" id="signalChanged">---</span>
-</div>
-
-<div class="info-row">
-<span class="label">Decision Candle</span>
-<span class="value" id="decisionCandle">---</span>
-</div>
-
-</div>
-
-
-<div class="card">
-
-<h2>📋 V3 Decision History</h2>
+<h2>🕐 V3 Decision History</h2>
 
 <div id="history" class="history">
 No decisions yet.
@@ -445,7 +555,9 @@ No decisions yet.
 </div>
 
 
-<div class="card alert-box">
+<!-- ================= ALERT HISTORY ================= -->
+
+<div class="card">
 
 <h2>🔔 Alert History</h2>
 
@@ -458,7 +570,7 @@ No CALL/PUT alerts yet.
 
 <div class="footer">
 
-V3.2 Live Signal Engine — Signals are informational and are not guarantees of trading outcomes.
+V3.3 Live Signal Engine — Informational signals only.
 
 </div>
 
@@ -473,6 +585,12 @@ V3.2 Live Signal Engine — Signals are informational and are not guarantees of 
 const API_URL =
 "https://iqsignalengine-backend.onrender.com";
 
+const TIMEFRAME_SECONDS = 60;
+
+
+/* =========================
+   GLOBAL STATE
+========================= */
 
 let candles = [];
 
@@ -487,6 +605,8 @@ let alertsInitialized = false;
 let audioContext = null;
 
 let alertsEnabled = false;
+
+let lastDisplayedDecisionId = null;
 
 
 /* =========================
@@ -503,7 +623,8 @@ async function enableAlerts() {
 
         if (AudioContext) {
 
-            audioContext = new AudioContext();
+            audioContext =
+                new AudioContext();
 
             await audioContext.resume();
 
@@ -511,7 +632,10 @@ async function enableAlerts() {
 
         if ("Notification" in window) {
 
-            if (Notification.permission === "default") {
+            if (
+                Notification.permission ===
+                "default"
+            ) {
 
                 await Notification.requestPermission();
 
@@ -521,18 +645,25 @@ async function enableAlerts() {
 
         alertsEnabled = true;
 
-        document.getElementById("alertStatus").textContent =
+        document.getElementById(
+            "alertStatus"
+        ).textContent =
             "Alerts: ON 🔔";
 
     }
 
     catch(error) {
 
-        console.error("Alert enable error:", error);
+        console.error(
+            "Alert enable error:",
+            error
+        );
 
         alertsEnabled = true;
 
-        document.getElementById("alertStatus").textContent =
+        document.getElementById(
+            "alertStatus"
+        ).textContent =
             "Alerts: ON";
 
     }
@@ -541,7 +672,7 @@ async function enableAlerts() {
 
 
 /* =========================
-   SOUND
+   ALERT SOUND
 ========================= */
 
 function playAlertSound(signal) {
@@ -558,17 +689,14 @@ function playAlertSound(signal) {
 
         oscillator.connect(gain);
 
-        gain.connect(audioContext.destination);
+        gain.connect(
+            audioContext.destination
+        );
 
-        if (signal === "CALL") {
-
-            oscillator.frequency.value = 880;
-
-        } else {
-
-            oscillator.frequency.value = 440;
-
-        }
+        oscillator.frequency.value =
+            signal === "CALL"
+            ? 880
+            : 440;
 
         oscillator.type = "sine";
 
@@ -597,7 +725,10 @@ function playAlertSound(signal) {
 
     catch(error) {
 
-        console.error("Sound error:", error);
+        console.error(
+            "Sound error:",
+            error
+        );
 
     }
 
@@ -605,10 +736,13 @@ function playAlertSound(signal) {
 
 
 /* =========================
-   BROWSER NOTIFICATION
+   NOTIFICATION
 ========================= */
 
-function sendNotification(signal, data) {
+function sendNotification(
+    signal,
+    data
+) {
 
     if (
         !alertsEnabled ||
@@ -617,7 +751,10 @@ function sendNotification(signal, data) {
         return;
     }
 
-    if (Notification.permission !== "granted") {
+    if (
+        Notification.permission !==
+        "granted"
+    ) {
         return;
     }
 
@@ -633,9 +770,12 @@ function sendNotification(signal, data) {
             `${data.trend || "---"} • ` +
             `${data.confirmation || "---"}`;
 
-        new Notification(title, {
-            body: message
-        });
+        new Notification(
+            title,
+            {
+                body: message
+            }
+        );
 
     }
 
@@ -655,10 +795,15 @@ function sendNotification(signal, data) {
    TOAST
 ========================= */
 
-function showToast(signal, data) {
+function showToast(
+    signal,
+    data
+) {
 
     const toast =
-        document.getElementById("toast");
+        document.getElementById(
+            "toast"
+        );
 
     toast.className =
         "toast show " +
@@ -667,9 +812,11 @@ function showToast(signal, data) {
     toast.innerHTML = `
 
         <strong>
-        ${signal === "CALL"
+        ${
+            signal === "CALL"
             ? "🟢 NEW CALL SIGNAL"
-            : "🔴 NEW PUT SIGNAL"}
+            : "🔴 NEW PUT SIGNAL"
+        }
         </strong>
 
         <br><br>
@@ -689,17 +836,19 @@ function showToast(signal, data) {
 
     `;
 
-    setTimeout(() => {
-
-        toast.className = "toast";
-
-    }, 5000);
+    setTimeout(
+        () => {
+            toast.className =
+                "toast";
+        },
+        5000
+    );
 
 }
 
 
 /* =========================
-   VISUAL ALERT
+   SCREEN FLASH
 ========================= */
 
 function flashScreen(signal) {
@@ -721,10 +870,13 @@ function flashScreen(signal) {
 
 
 /* =========================
-   CREATE ALERT
+   TRIGGER ALERT
 ========================= */
 
-function triggerAlert(signal, data) {
+function triggerAlert(
+    signal,
+    data
+) {
 
     if (
         signal !== "CALL" &&
@@ -739,13 +891,22 @@ function triggerAlert(signal, data) {
 
     playAlertSound(signal);
 
-    sendNotification(signal, data);
+    sendNotification(
+        signal,
+        data
+    );
 
-    showToast(signal, data);
+    showToast(
+        signal,
+        data
+    );
 
     flashScreen(signal);
 
-    addAlertHistory(signal, data);
+    addAlertHistory(
+        signal,
+        data
+    );
 
 }
 
@@ -754,33 +915,42 @@ function triggerAlert(signal, data) {
    ALERT HISTORY
 ========================= */
 
-function addAlertHistory(signal, data) {
-
-    const time =
-        new Date().toLocaleTimeString();
+function addAlertHistory(
+    signal,
+    data
+) {
 
     alertHistory.unshift({
 
-        time: time,
+        time:
+            new Date()
+            .toLocaleTimeString(),
 
         signal: signal,
 
-        score: data.score || "---",
+        score:
+            data.score || "---",
 
-        trend: data.trend || "---",
+        trend:
+            data.trend || "---",
 
         confirmation:
             data.confirmation || "---",
 
         decisionId:
-            data.decision_id || "?"
+            data.decision_id || "---"
 
     });
 
-    if (alertHistory.length > 20) {
+    if (
+        alertHistory.length > 20
+    ) {
 
         alertHistory =
-            alertHistory.slice(0,20);
+            alertHistory.slice(
+                0,
+                20
+            );
 
     }
 
@@ -806,53 +976,59 @@ function renderAlertHistory() {
     }
 
     box.innerHTML =
-        alertHistory.map(item => {
+        alertHistory.map(
+            item => {
 
-            const cls =
-                item.signal === "CALL"
-                ? "alert-call"
-                : "alert-put";
+                const cls =
+                    item.signal === "CALL"
+                    ? "alert-call"
+                    : "alert-put";
 
-            return `
+                return `
 
-            <div class="alert-item ${cls}">
+                <div
+                    class="alert-item ${cls}"
+                >
 
-                <strong>
-                    ${item.signal === "CALL"
+                    <strong>
+                    ${
+                        item.signal === "CALL"
                         ? "🟢 CALL"
-                        : "🔴 PUT"}
-                </strong>
+                        : "🔴 PUT"
+                    }
+                    </strong>
 
-                <br>
+                    <br>
 
-                Time:
-                ${item.time}
+                    Time:
+                    ${item.time}
 
-                <br>
+                    <br>
 
-                Score:
-                ${item.score}
+                    Score:
+                    ${item.score}
 
-                <br>
+                    <br>
 
-                Trend:
-                ${item.trend}
+                    Trend:
+                    ${item.trend}
 
-                <br>
+                    <br>
 
-                Confirmation:
-                ${item.confirmation}
+                    Confirmation:
+                    ${item.confirmation}
 
-                <br>
+                    <br>
 
-                Decision ID:
-                ${item.decisionId}
+                    Decision ID:
+                    ${item.decisionId}
 
-            </div>
+                </div>
 
-            `;
+                `;
 
-        }).join("");
+            }
+        ).join("");
 
 }
 
@@ -861,30 +1037,43 @@ function renderAlertHistory() {
    SIGNAL STYLE
 ========================= */
 
-function setSignal(elementId, signal) {
+function setSignal(
+    elementId,
+    signal
+) {
 
-    const el =
-        document.getElementById(elementId);
+    const element =
+        document.getElementById(
+            elementId
+        );
 
-    el.textContent = signal;
+    element.textContent =
+        signal;
 
-    el.className = "signal";
+    element.className =
+        "signal";
 
     if (signal === "CALL") {
 
-        el.classList.add("call");
+        element.classList.add(
+            "call"
+        );
 
     }
 
     else if (signal === "PUT") {
 
-        el.classList.add("put");
+        element.classList.add(
+            "put"
+        );
 
     }
 
     else {
 
-        el.classList.add("wait");
+        element.classList.add(
+            "wait"
+        );
 
     }
 
@@ -901,7 +1090,8 @@ async function fetchV3Event() {
 
         const response =
             await fetch(
-                API_URL + "/v3-event"
+                API_URL +
+                "/v3-event"
             );
 
         if (!response.ok) {
@@ -921,119 +1111,191 @@ async function fetchV3Event() {
         const signal =
             data.signal || {};
 
-        /* Basic information */
 
-        document.getElementById("asset")
-            .textContent =
+        /* MARKET DATA */
+
+        document.getElementById(
+            "asset"
+        ).textContent =
             data.asset || "---";
 
-        document.getElementById("price")
-            .textContent =
-            signal.price ?? "---";
+        document.getElementById(
+            "price"
+        ).textContent =
+            signal.price ??
+            "---";
 
-        document.getElementById("candles")
-            .textContent =
-            signal.candles_available ??
+        document.getElementById(
+            "candles"
+        ).textContent =
             data.candles_available ??
             "---";
 
-        document.getElementById("streamStatus")
-            .textContent =
+        document.getElementById(
+            "streamStatus"
+        ).textContent =
             "STREAMING";
+
 
         /* V3 */
 
         setSignal(
             "v3Signal",
-            signal.signal || "WAIT"
+            signal.signal ||
+            "WAIT"
         );
 
-        document.getElementById("v3Score")
-            .textContent =
-            signal.score || "---";
+        document.getElementById(
+            "v3Score"
+        ).textContent =
+            signal.score ||
+            "---";
 
-        document.getElementById("v3Trend")
-            .textContent =
-            signal.trend || "---";
+        document.getElementById(
+            "v3Trend"
+        ).textContent =
+            signal.trend ||
+            "---";
 
-        document.getElementById("v3Rsi")
-            .textContent =
-            signal.rsi ?? "---";
+        document.getElementById(
+            "v3Rsi"
+        ).textContent =
+            signal.rsi ??
+            "---";
 
-        document.getElementById("v3Momentum")
-            .textContent =
-            signal.momentum || "---";
+        document.getElementById(
+            "v3Momentum"
+        ).textContent =
+            signal.momentum ||
+            "---";
 
-        document.getElementById("v3Candle")
-            .textContent =
-            signal.candle_strength || "---";
+        document.getElementById(
+            "v3Candle"
+        ).textContent =
+            signal.candle_strength ||
+            "---";
 
-        document.getElementById("v3Slope")
-            .textContent =
-            signal.ema_slope || "---";
+        document.getElementById(
+            "v3Slope"
+        ).textContent =
+            signal.ema_slope ||
+            "---";
 
-        document.getElementById("v3Confirmation")
-            .textContent =
-            signal.confirmation || "---";
+        document.getElementById(
+            "v3Confirmation"
+        ).textContent =
+            signal.confirmation ||
+            "---";
 
 
-        /* Event */
+        /* EVENT */
 
-        document.getElementById("decisionId")
-            .textContent =
-            event.decision_id ?? "---";
+        const decisionId =
+            event.decision_id;
 
-        document.getElementById("previousSignal")
-            .textContent =
-            event.previous_signal || "---";
+        document.getElementById(
+            "decisionId"
+        ).textContent =
+            decisionId ??
+            "---";
 
-        document.getElementById("currentSignal")
-            .textContent =
-            event.signal || "---";
+        document.getElementById(
+            "previousSignal"
+        ).textContent =
+            event.previous_signal ||
+            "---";
 
-        document.getElementById("newDecision")
-            .textContent =
+        document.getElementById(
+            "currentSignal"
+        ).textContent =
+            event.signal ||
+            "---";
+
+        document.getElementById(
+            "newDecision"
+        ).textContent =
             event.new_decision
             ? "YES"
             : "NO";
 
-        document.getElementById("signalChanged")
-            .textContent =
+        document.getElementById(
+            "signalChanged"
+        ).textContent =
             event.signal_changed
             ? "YES"
             : "NO";
 
-        document.getElementById("decisionCandle")
-            .textContent =
+
+        /* LAST COMPLETED CANDLE */
+
+        if (
             event.decision_candle
-            ? new Date(
-                event.decision_candle * 1000
-              ).toLocaleTimeString()
-            : "---";
+        ) {
+
+            const date =
+                new Date(
+                    event.decision_candle
+                    * 1000
+                );
+
+            document.getElementById(
+                "lastCompletedCandle"
+            ).textContent =
+                date.toLocaleTimeString();
+
+        }
 
 
         /*
-         IMPORTANT:
-         Do NOT alert the first time
-         the page sees the current decision.
+        Add decision history only
+        when the backend reports a
+        genuinely new decision.
         */
 
-        if (!alertsInitialized) {
+        if (
+            event.new_decision === true &&
+            decisionId !==
+            lastDisplayedDecisionId
+        ) {
+
+            lastDisplayedDecisionId =
+                decisionId;
+
+            addDecisionHistory(
+                signal
+            );
+
+        }
+
+
+        /*
+        INITIALIZATION
+
+        Do not alert for the signal
+        that already existed when
+        the page was opened.
+        */
+
+        if (
+            !alertsInitialized
+        ) {
 
             lastDecisionId =
-                event.decision_id;
+                decisionId;
 
-            alertsInitialized = true;
+            alertsInitialized =
+                true;
 
         }
 
         else {
 
             const isNewDecision =
-                event.new_decision === true;
+                event.new_decision ===
+                true;
 
             const newDecisionId =
-                event.decision_id !==
+                decisionId !==
                 lastDecisionId;
 
             if (
@@ -1042,14 +1304,16 @@ async function fetchV3Event() {
             ) {
 
                 lastDecisionId =
-                    event.decision_id;
+                    decisionId;
 
                 const newSignal =
                     event.signal;
 
                 if (
-                    newSignal === "CALL" ||
-                    newSignal === "PUT"
+                    newSignal ===
+                    "CALL" ||
+                    newSignal ===
+                    "PUT"
                 ) {
 
                     triggerAlert(
@@ -1065,7 +1329,7 @@ async function fetchV3Event() {
                                 signal.confirmation,
 
                             decision_id:
-                                event.decision_id
+                                decisionId
                         }
                     );
 
@@ -1104,10 +1368,13 @@ async function fetchV2Signal() {
 
         const response =
             await fetch(
-                API_URL + "/live-signal"
+                API_URL +
+                "/live-signal"
             );
 
-        if (!response.ok) return;
+        if (!response.ok) {
+            return;
+        }
 
         const data =
             await response.json();
@@ -1117,16 +1384,21 @@ async function fetchV2Signal() {
 
         setSignal(
             "v2Signal",
-            signal.signal || "WAIT"
+            signal.signal ||
+            "WAIT"
         );
 
-        document.getElementById("v2Score")
-            .textContent =
-            signal.score || "---";
+        document.getElementById(
+            "v2Score"
+        ).textContent =
+            signal.score ||
+            "---";
 
-        document.getElementById("v2Rsi")
-            .textContent =
-            signal.rsi ?? "---";
+        document.getElementById(
+            "v2Rsi"
+        ).textContent =
+            signal.rsi ??
+            "---";
 
     }
 
@@ -1152,10 +1424,13 @@ async function fetchCandles() {
 
         const response =
             await fetch(
-                API_URL + "/live-candles"
+                API_URL +
+                "/live-candles"
             );
 
-        if (!response.ok) return;
+        if (!response.ok) {
+            return;
+        }
 
         const data =
             await response.json();
@@ -1186,7 +1461,9 @@ async function fetchCandles() {
 function drawChart() {
 
     const canvas =
-        document.getElementById("chart");
+        document.getElementById(
+            "chart"
+        );
 
     const ctx =
         canvas.getContext("2d");
@@ -1195,7 +1472,8 @@ function drawChart() {
         canvas.getBoundingClientRect();
 
     const dpr =
-        window.devicePixelRatio || 1;
+        window.devicePixelRatio ||
+        1;
 
     canvas.width =
         rect.width * dpr;
@@ -1203,7 +1481,10 @@ function drawChart() {
     canvas.height =
         rect.height * dpr;
 
-    ctx.scale(dpr,dpr);
+    ctx.scale(
+        dpr,
+        dpr
+    );
 
     const width =
         rect.width;
@@ -1218,8 +1499,9 @@ function drawChart() {
         height
     );
 
-    if (!candles.length) return;
-
+    if (!candles.length) {
+        return;
+    }
 
     const visible =
         candles.slice(-50);
@@ -1230,119 +1512,154 @@ function drawChart() {
     let maxPrice =
         -Infinity;
 
-    visible.forEach(c => {
+    visible.forEach(
+        candle => {
 
-        minPrice =
-            Math.min(
-                minPrice,
-                Number(c.low)
-            );
+            minPrice =
+                Math.min(
+                    minPrice,
+                    Number(candle.low)
+                );
 
-        maxPrice =
-            Math.max(
-                maxPrice,
-                Number(c.high)
-            );
+            maxPrice =
+                Math.max(
+                    maxPrice,
+                    Number(candle.high)
+                );
 
-    });
+        }
+    );
 
-
-    const padding =
-        25;
+    const padding = 25;
 
     const chartHeight =
-        height - padding * 2;
+        height -
+        padding * 2;
 
     const chartWidth =
-        width - padding * 2;
+        width -
+        padding * 2;
 
     const step =
-        chartWidth / visible.length;
+        chartWidth /
+        visible.length;
 
     const range =
-        maxPrice - minPrice || 1;
-
+        maxPrice -
+        minPrice ||
+        1;
 
     function y(price) {
 
         return (
             padding +
-            (maxPrice - price)
-            / range *
+            (
+                maxPrice -
+                price
+            ) /
+            range *
             chartHeight
         );
 
     }
 
+    visible.forEach(
+        (candle, index) => {
 
-    visible.forEach((c,i) => {
+            const open =
+                Number(
+                    candle.open
+                );
 
-        const open =
-            Number(c.open);
+            const close =
+                Number(
+                    candle.close
+                );
 
-        const close =
-            Number(c.close);
+            const high =
+                Number(
+                    candle.high
+                );
 
-        const high =
-            Number(c.high);
+            const low =
+                Number(
+                    candle.low
+                );
 
-        const low =
-            Number(c.low);
+            const x =
+                padding +
+                index * step +
+                step / 2;
 
-        const x =
-            padding +
-            i * step +
-            step / 2;
+            const bullish =
+                close >= open;
 
-        const up =
-            close >= open;
+            const bodyTop =
+                y(
+                    Math.max(
+                        open,
+                        close
+                    )
+                );
 
-        const bodyTop =
-            y(Math.max(open,close));
+            const bodyBottom =
+                y(
+                    Math.min(
+                        open,
+                        close
+                    )
+                );
 
-        const bodyBottom =
-            y(Math.min(open,close));
+            const bodyHeight =
+                Math.max(
+                    1,
+                    bodyBottom -
+                    bodyTop
+                );
 
-        const bodyHeight =
-            Math.max(
-                1,
-                bodyBottom - bodyTop
+
+            /* Wick */
+
+            ctx.beginPath();
+
+            ctx.moveTo(
+                x,
+                y(high)
             );
 
+            ctx.lineTo(
+                x,
+                y(low)
+            );
 
-        ctx.beginPath();
+            ctx.strokeStyle =
+                bullish
+                ? "#35e69a"
+                : "#ff5263";
 
-        ctx.moveTo(
-            x,
-            y(high)
-        );
-
-        ctx.lineTo(
-            x,
-            y(low)
-        );
-
-        ctx.strokeStyle =
-            up
-            ? "#35e69a"
-            : "#ff5263";
-
-        ctx.stroke();
+            ctx.stroke();
 
 
-        ctx.fillStyle =
-            up
-            ? "#35e69a"
-            : "#ff5263";
+            /* Body */
 
-        ctx.fillRect(
-            x - step * .3,
-            bodyTop,
-            step * .6,
-            bodyHeight
-        );
+            ctx.fillStyle =
+                bullish
+                ? "#35e69a"
+                : "#ff5263";
 
-    });
+            ctx.fillRect(
+                x -
+                step * .3,
+
+                bodyTop,
+
+                step * .6,
+
+                bodyHeight
+            );
+
+        }
+    );
 
 }
 
@@ -1351,33 +1668,43 @@ function drawChart() {
    DECISION HISTORY
 ========================= */
 
-function addDecisionHistory(signal) {
+function addDecisionHistory(
+    signal
+) {
 
-    if (!signal.signal) return;
-
-    const time =
-        new Date()
-        .toLocaleTimeString();
+    if (!signal.signal) {
+        return;
+    }
 
     decisionHistory.unshift({
 
-        time: time,
+        time:
+            new Date()
+            .toLocaleTimeString(),
 
         signal:
             signal.signal,
 
         score:
-            signal.score || "---",
+            signal.score ||
+            "---",
 
         confirmation:
-            signal.confirmation || "---"
+            signal.confirmation ||
+            "---"
 
     });
 
-    if (decisionHistory.length > 20) {
+    if (
+        decisionHistory.length >
+        20
+    ) {
 
         decisionHistory =
-            decisionHistory.slice(0,20);
+            decisionHistory.slice(
+                0,
+                20
+            );
 
     }
 
@@ -1403,40 +1730,215 @@ function renderDecisionHistory() {
     }
 
     box.innerHTML =
-        decisionHistory.map(item => {
+        decisionHistory.map(
+            item => {
 
-            let cls =
-                "history-wait";
+                let cls =
+                    "history-wait";
 
-            if (item.signal === "CALL")
-                cls = "history-call";
+                if (
+                    item.signal ===
+                    "CALL"
+                ) {
 
-            if (item.signal === "PUT")
-                cls = "history-put";
+                    cls =
+                        "history-call";
 
-            return `
+                }
 
-            <div class="history-item">
+                if (
+                    item.signal ===
+                    "PUT"
+                ) {
 
-                <strong class="${cls}">
-                    ${item.signal}
-                </strong>
+                    cls =
+                        "history-put";
 
-                <span>
-                    ${item.score}
-                </span>
+                }
 
-                <span>
-                    ${item.time}
-                    <br>
-                    ${item.confirmation}
-                </span>
+                return `
 
-            </div>
+                <div
+                    class="history-item"
+                >
 
-            `;
+                    <strong
+                        class="${cls}"
+                    >
+                        ${item.signal}
+                    </strong>
 
-        }).join("");
+                    <span>
+                        ${item.score}
+                    </span>
+
+                    <span>
+                        ${item.time}
+                        <br>
+                        ${item.confirmation}
+                    </span>
+
+                </div>
+
+                `;
+
+            }
+        ).join("");
+
+}
+
+
+/* =========================
+   V3.3 COUNTDOWN
+========================= */
+
+function updateCountdown() {
+
+    const now =
+        Date.now();
+
+    const currentCandleStart =
+        Math.floor(
+            now / 1000 /
+            TIMEFRAME_SECONDS
+        ) *
+        TIMEFRAME_SECONDS;
+
+    const nextCandleStart =
+        currentCandleStart +
+        TIMEFRAME_SECONDS;
+
+    const remaining =
+        Math.max(
+            0,
+            nextCandleStart -
+            Math.floor(now / 1000)
+        );
+
+    const minutes =
+        Math.floor(
+            remaining / 60
+        );
+
+    const seconds =
+        remaining % 60;
+
+    const formatted =
+        String(minutes)
+        .padStart(2,"0")
+        +
+        ":" +
+        String(seconds)
+        .padStart(2,"0");
+
+    const countdown =
+        document.getElementById(
+            "countdown"
+        );
+
+    countdown.textContent =
+        formatted;
+
+    countdown.classList.remove(
+        "warning",
+        "critical"
+    );
+
+    if (
+        remaining <= 10
+    ) {
+
+        countdown.classList.add(
+            "critical"
+        );
+
+    }
+
+    else if (
+        remaining <= 20
+    ) {
+
+        countdown.classList.add(
+            "warning"
+        );
+
+    }
+
+
+    document.getElementById(
+        "nextDecision"
+    ).textContent =
+        new Date(
+            nextCandleStart *
+            1000
+        ).toLocaleTimeString();
+
+
+    /*
+    The candle is still forming
+    until the countdown reaches
+    zero.
+    */
+
+    document.getElementById(
+        "candleStatus"
+    ).textContent =
+        remaining > 0
+        ? "🟡 CANDLE FORMING"
+        : "🟢 CANDLE CLOSED";
+
+
+    /*
+    Entry panel is deliberately
+    conservative.
+
+    We don't call a forming candle
+    a confirmed signal.
+    */
+
+    const entryBox =
+        document.getElementById(
+            "entryBox"
+        );
+
+    const entryTitle =
+        document.getElementById(
+            "entryTitle"
+        );
+
+    const entryDescription =
+        document.getElementById(
+            "entryDescription"
+        );
+
+
+    if (
+        remaining <= 5
+    ) {
+
+        entryBox.className =
+            "entry-box entry-wait";
+
+        entryTitle.textContent =
+            "⏳ CANDLE CLOSING";
+
+        entryDescription.textContent =
+            "Wait for the completed candle and V3 confirmation.";
+
+    }
+
+    else {
+
+        entryBox.className =
+            "entry-box entry-wait";
+
+        entryTitle.textContent =
+            "⏱️ WAITING FOR CLOSE";
+
+        entryDescription.textContent =
+            "V3 evaluates the completed candle, not the unfinished candle.";
+
+    }
 
 }
 
@@ -1466,6 +1968,13 @@ setInterval(
     updateAll,
     2000
 );
+
+setInterval(
+    updateCountdown,
+    250
+);
+
+updateCountdown();
 
 window.addEventListener(
     "resize",
