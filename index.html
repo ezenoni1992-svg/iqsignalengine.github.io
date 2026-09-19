@@ -3,558 +3,622 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#07111f">
 
 <title>IQ Signal Engine V2</title>
 
 <style>
+
 * {
     box-sizing: border-box;
-    margin: 0;
-    padding: 0;
 }
 
 body {
+    margin: 0;
     font-family: Arial, Helvetica, sans-serif;
-    background: #050b14;
-    color: #e8eef7;
-    min-height: 100vh;
+    background: #07111f;
+    color: #ffffff;
 }
 
-.app {
-    max-width: 1100px;
+.container {
+    width: 100%;
+    max-width: 1200px;
     margin: auto;
-    padding: 16px;
+    padding: 18px;
 }
+
+/* HEADER */
 
 .header {
-    background: #081525;
-    border: 1px solid #1e3148;
-    border-radius: 16px;
-    padding: 18px;
-    margin-bottom: 14px;
-}
-
-.brand {
-    font-size: 24px;
-    font-weight: 800;
-}
-
-.sub {
-    color: #8ea1b8;
-    font-size: 13px;
-    margin-top: 5px;
-}
-
-.controls {
-    display: grid;
-    grid-template-columns: 1fr 1fr auto;
-    gap: 10px;
-    margin-bottom: 14px;
-}
-
-.control {
-    background: #0b1727;
-    border: 1px solid #21354d;
-    border-radius: 12px;
-    padding: 10px;
-}
-
-.control label {
-    display: block;
-    color: #8ea1b8;
-    font-size: 11px;
-    margin-bottom: 5px;
-    text-transform: uppercase;
-}
-
-.control select,
-.control button {
-    width: 100%;
-    background: #101f32;
-    color: #fff;
-    border: 1px solid #2a425d;
-    border-radius: 8px;
-    padding: 11px;
-}
-
-.control button {
-    cursor: pointer;
-    font-weight: 700;
-}
-
-.signal {
-    display: grid;
-    grid-template-columns: 1.3fr 1fr 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 14px;
-}
-
-.card {
-    background: #0b1727;
-    border: 1px solid #21354d;
-    border-radius: 14px;
-    padding: 15px;
-}
-
-.signal-main {
-    min-height: 125px;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+    gap: 12px;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.subtitle {
+    color: #8fa3b8;
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+.status {
+    padding: 8px 12px;
+    border-radius: 20px;
+    background: #182637;
+    font-size: 12px;
+}
+
+.status.live {
+    color: #62ff9a;
+}
+
+/* MARKET BAR */
+
+.market-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.market-box {
+    background: #0d1b2b;
+    border: 1px solid #1b3047;
+    border-radius: 10px;
+    padding: 13px;
+}
+
+.label {
+    color: #7f95aa;
+    font-size: 11px;
+    margin-bottom: 6px;
+}
+
+.value {
+    font-size: 17px;
+    font-weight: bold;
+}
+
+/* SIGNAL */
+
+.signal-card {
+    background: #0d1b2b;
+    border: 1px solid #1b3047;
+    border-radius: 14px;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 15px;
 }
 
 .signal-label {
-    font-size: 11px;
-    color: #8ea1b8;
-    text-transform: uppercase;
+    color: #91a5ba;
+    font-size: 12px;
+    margin-bottom: 8px;
 }
 
-.signal-value {
-    font-size: 34px;
+.signal {
+    font-size: 42px;
     font-weight: 900;
-    margin-top: 6px;
+    letter-spacing: 2px;
 }
 
-.call {
-    color: #2edb87;
+.signal.call {
+    color: #35f58a;
 }
 
-.put {
-    color: #ff5b6c;
+.signal.put {
+    color: #ff4d6d;
 }
 
-.wait {
-    color: #efc65b;
+.signal.wait {
+    color: #ffc857;
 }
 
-.metric {
-    font-size: 22px;
-    font-weight: 800;
-    margin-top: 8px;
+.score {
+    margin-top: 7px;
+    color: #b6c5d5;
 }
 
-.metric small {
-    font-size: 11px;
-    color: #8ea1b8;
-    font-weight: 400;
-}
+/* CHART */
 
 .chart-card {
-    background: #081525;
-    border: 1px solid #1e3148;
-    border-radius: 16px;
-    padding: 12px;
-    margin-bottom: 14px;
+    background: #0d1b2b;
+    border: 1px solid #1b3047;
+    border-radius: 14px;
+    padding: 15px;
+    margin-bottom: 15px;
 }
 
-.chart-head {
+.chart-header {
     display: flex;
     justify-content: space-between;
-    gap: 8px;
     align-items: center;
     margin-bottom: 10px;
 }
 
 .chart-title {
-    font-weight: 800;
+    font-weight: bold;
 }
 
-.price {
-    color: #9eb0c4;
-    font-size: 13px;
+.chart-info {
+    color: #8fa3b8;
+    font-size: 12px;
 }
 
-.chart-wrap {
-    height: 330px;
+.chart-wrapper {
+    width: 100%;
+    height: 420px;
     position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+    background: #07111f;
 }
 
-.chart-wrap canvas {
+canvas {
     width: 100%;
     height: 100%;
     display: block;
-    background: #06101c;
+}
+
+/* INDICATORS */
+
+.indicators {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.indicator {
+    background: #0d1b2b;
+    border: 1px solid #1b3047;
     border-radius: 10px;
+    padding: 14px;
 }
 
-.section-title {
-    font-weight: 800;
-    margin: 18px 0 10px;
+.indicator-value {
+    font-size: 18px;
+    font-weight: bold;
 }
 
-.history {
-    background: #081525;
-    border: 1px solid #1e3148;
+/* HISTORY */
+
+.history-card {
+    background: #0d1b2b;
+    border: 1px solid #1b3047;
     border-radius: 14px;
-    overflow: hidden;
+    padding: 15px;
+}
+
+.history-title {
+    font-weight: bold;
+    margin-bottom: 10px;
 }
 
 .history-row {
-    display: grid;
-    grid-template-columns: 1.2fr .8fr .8fr .8fr;
-    padding: 12px;
-    border-bottom: 1px solid #1c2b3d;
+    display: flex;
+    justify-content: space-between;
+    padding: 9px 0;
+    border-bottom: 1px solid #182b3e;
     font-size: 13px;
 }
 
-.history-row:last-child {
-    border-bottom: 0;
-}
-
-.history-head {
-    color: #8ea1b8;
-    font-size: 11px;
-    text-transform: uppercase;
-}
-
 .history-call {
-    color: #2edb87;
-    font-weight: 700;
+    color: #35f58a;
 }
 
 .history-put {
-    color: #ff5b6c;
-    font-weight: 700;
+    color: #ff4d6d;
 }
 
 .history-wait {
-    color: #efc65b;
-    font-weight: 700;
+    color: #ffc857;
 }
 
 .disclaimer {
-    margin-top: 15px;
-    padding: 12px;
-    border: 1px solid #28364a;
-    border-radius: 10px;
-    color: #8293a7;
+    color: #687e93;
     font-size: 11px;
-    line-height: 1.5;
-}
-
-.status {
-    margin-top: 10px;
-    color: #6f839a;
-    font-size: 11px;
-}
-
-.footer {
     text-align: center;
-    color: #52657b;
-    font-size: 11px;
-    padding: 18px 0;
+    line-height: 1.5;
+    margin: 20px 5px 5px;
 }
 
-.badge {
-    display: inline-block;
-    padding: 4px 7px;
-    border-radius: 99px;
-    background: #11253b;
-    color: #8fb5df;
-    font-size: 10px;
-    margin-left: 5px;
-}
-
-.live {
-    color: #2edb87;
-}
-
-.offline {
-    color: #ff5b6c;
-}
+/* MOBILE */
 
 @media (max-width: 700px) {
 
-    .controls {
-        grid-template-columns: 1fr 1fr;
+    .container {
+        padding: 10px;
     }
 
-    .controls .control:last-child {
-        grid-column: 1 / -1;
+    .header {
+        align-items: flex-start;
+    }
+
+    .title {
+        font-size: 20px;
+    }
+
+    .market-bar {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .indicators {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .chart-wrapper {
+        height: 360px;
     }
 
     .signal {
-        grid-template-columns: 1fr 1fr;
+        font-size: 36px;
     }
 
-    .signal-main {
-        grid-column: 1 / -1;
-    }
-
-    .chart-wrap {
-        height: 280px;
-    }
-
-    .history-row {
-        grid-template-columns: 1.1fr .8fr .8fr .7fr;
-        font-size: 12px;
-    }
 }
+
 </style>
 </head>
 
 <body>
 
-<div class="app">
+<div class="container">
 
-<header class="header">
+    <!-- HEADER -->
 
-    <div class="brand">
-        IQ Signal Engine
-        <span class="badge">V2 LIVE</span>
-    </div>
+    <div class="header">
 
-    <div class="sub">
-        Live IQ Option market data • V2 technical signal engine
-    </div>
+        <div>
+            <div class="title">
+                IQ Signal Engine V2
+            </div>
 
-</header>
-
-
-<section class="controls">
-
-    <div class="control">
-
-        <label>Asset</label>
-
-        <select id="asset">
-
-            <option value="EURUSD">EUR/USD</option>
-
-        </select>
-
-    </div>
-
-
-    <div class="control">
-
-        <label>Timeframe</label>
-
-        <select id="timeframe">
-
-            <option value="1m">1 Minute</option>
-
-        </select>
-
-    </div>
-
-
-    <div class="control">
-
-        <label>Connection</label>
-
-        <button id="refresh">
-            Refresh Now
-        </button>
-
-    </div>
-
-</section>
-
-
-<section class="signal">
-
-    <div class="card signal-main">
-
-        <div class="signal-label">
-            Current Signal
+            <div class="subtitle">
+                Live market analysis
+            </div>
         </div>
 
-        <div id="signal" class="signal-value wait">
+        <div id="connectionStatus" class="status">
+            CONNECTING...
+        </div>
+
+    </div>
+
+
+    <!-- MARKET -->
+
+    <div class="market-bar">
+
+        <div class="market-box">
+            <div class="label">ASSET</div>
+            <div class="value" id="asset">
+                EURJPY-OTC
+            </div>
+        </div>
+
+        <div class="market-box">
+            <div class="label">TIMEFRAME</div>
+            <div class="value">
+                1 MIN
+            </div>
+        </div>
+
+        <div class="market-box">
+            <div class="label">LIVE PRICE</div>
+            <div class="value" id="price">
+                --
+            </div>
+        </div>
+
+        <div class="market-box">
+            <div class="label">CANDLES</div>
+            <div class="value" id="candleCount">
+                --
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- SIGNAL -->
+
+    <div class="signal-card">
+
+        <div class="signal-label">
+            CURRENT SIGNAL
+        </div>
+
+        <div id="signal" class="signal wait">
             WAIT
         </div>
 
-        <div id="confidence" class="sub">
+        <div id="score" class="score">
             Score: --
         </div>
 
     </div>
 
 
-    <div class="card">
+    <!-- CHART -->
 
-        <div class="signal-label">
-            RSI (14)
+    <div class="chart-card">
+
+        <div class="chart-header">
+
+            <div class="chart-title">
+                Live Candlestick Chart
+            </div>
+
+            <div id="chartInfo" class="chart-info">
+                Waiting for data...
+            </div>
+
         </div>
 
-        <div id="rsi" class="metric">
-            --
-        </div>
-
-        <div id="rsiState" class="sub">
-            --
-        </div>
-
-    </div>
-
-
-    <div class="card">
-
-        <div class="signal-label">
-            EMA 9 / 21
-        </div>
-
-        <div id="ema" class="metric">
-            --
-        </div>
-
-        <div id="trend" class="sub">
-            Trend: --
+        <div class="chart-wrapper">
+            <canvas id="chart"></canvas>
         </div>
 
     </div>
 
 
-    <div class="card">
+    <!-- INDICATORS -->
 
-        <div class="signal-label">
-            Stream
+    <div class="indicators">
+
+        <div class="indicator">
+
+            <div class="label">
+                RSI 14
+            </div>
+
+            <div id="rsi" class="indicator-value">
+                --
+            </div>
+
         </div>
 
-        <div id="momentum" class="metric live">
-            LIVE
+
+        <div class="indicator">
+
+            <div class="label">
+                EMA 9
+            </div>
+
+            <div id="ema9" class="indicator-value">
+                --
+            </div>
+
         </div>
 
-        <div id="momentumState" class="sub">
-            Connecting...
+
+        <div class="indicator">
+
+            <div class="label">
+                EMA 21
+            </div>
+
+            <div id="ema21" class="indicator-value">
+                --
+            </div>
+
+        </div>
+
+
+        <div class="indicator">
+
+            <div class="label">
+                MOMENTUM
+            </div>
+
+            <div id="momentum" class="indicator-value">
+                --
+            </div>
+
         </div>
 
     </div>
 
-</section>
 
+    <!-- HISTORY -->
 
-<section class="chart-card">
+    <div class="history-card">
 
-    <div class="chart-head">
-
-        <div class="chart-title">
-
-            Price Action
-
-            <span class="badge" id="assetLabel">
-                EUR/USD
-            </span>
-
+        <div class="history-title">
+            Signal History
         </div>
 
-        <div class="price" id="price">
-            Price: --
+        <div id="history">
+            <div class="history-row">
+                <span>Waiting for signals...</span>
+            </div>
         </div>
 
     </div>
 
 
-    <div class="chart-wrap">
-
-        <canvas id="chart"></canvas>
-
+    <div class="disclaimer">
+        Signals are generated from technical indicators and live market data.
+        They are not guaranteed predictions or financial advice.
+        Trading involves financial risk.
     </div>
-
-
-    <div class="status" id="status">
-        Connecting to live backend...
-    </div>
-
-</section>
-
-
-<h3 class="section-title">
-    Signal History
-</h3>
-
-
-<section class="history">
-
-    <div class="history-row history-head">
-
-        <div>Time</div>
-        <div>Signal</div>
-        <div>RSI</div>
-        <div>Score</div>
-
-    </div>
-
-
-    <div id="historyRows"></div>
-
-</section>
-
-
-<div class="disclaimer">
-
-    <strong>Live data:</strong>
-
-    This dashboard receives market candles from the IQ Option
-    connection through the Render backend. Signals are technical
-    estimates and are not guaranteed outcomes or financial advice.
-
-</div>
-
-
-<div class="footer">
-
-    IQ Signal Engine • V2 Live
-
-</div>
 
 </div>
 
 
 <script>
 
-(function () {
-
-"use strict";
-
-
-/* =========================================
-   RENDER BACKEND
-========================================= */
+/* =====================================================
+   CONFIGURATION
+===================================================== */
 
 const API_URL =
     "https://iqsignalengine-backend.onrender.com";
 
+const SIGNAL_URL =
+    API_URL + "/live-signal";
 
-/* =========================================
+const CANDLES_URL =
+    API_URL + "/live-candles";
+
+
+/* =====================================================
+   STATE
+===================================================== */
+
+let candles = [];
+
+let signalHistory = [];
+
+let lastSignal = null;
+
+
+/* =====================================================
    ELEMENTS
-========================================= */
+===================================================== */
 
-const $ = function(id) {
-    return document.getElementById(id);
-};
+const signalElement =
+    document.getElementById("signal");
 
+const scoreElement =
+    document.getElementById("score");
+
+const priceElement =
+    document.getElementById("price");
+
+const candleCountElement =
+    document.getElementById("candleCount");
+
+const rsiElement =
+    document.getElementById("rsi");
+
+const ema9Element =
+    document.getElementById("ema9");
+
+const ema21Element =
+    document.getElementById("ema21");
+
+const momentumElement =
+    document.getElementById("momentum");
+
+const connectionElement =
+    document.getElementById("connectionStatus");
+
+const historyElement =
+    document.getElementById("history");
+
+const chartInfoElement =
+    document.getElementById("chartInfo");
 
 const canvas =
-    $("chart");
+    document.getElementById("chart");
 
 const ctx =
     canvas.getContext("2d");
 
 
-let history = [];
+/* =====================================================
+   FETCH SIGNAL
+===================================================== */
 
-let latestPrice = null;
+async function fetchSignal() {
 
+    try {
 
-/* =========================================
-   FORMAT PRICE
-========================================= */
+        const response =
+            await fetch(SIGNAL_URL + "?t=" + Date.now());
 
-function formatPrice(price) {
+        if (!response.ok) {
+            throw new Error("Signal request failed");
+        }
 
-    if (price === null || price === undefined) {
-        return "--";
+        const data =
+            await response.json();
+
+        updateSignal(data);
+
+        connectionElement.textContent =
+            "● LIVE";
+
+        connectionElement.classList.add("live");
+
     }
 
-    return Number(price).toFixed(5);
+    catch (error) {
+
+        connectionElement.textContent =
+            "OFFLINE";
+
+        connectionElement.classList.remove("live");
+
+        console.error(error);
+
+    }
+
 }
 
 
-/* =========================================
-   UPDATE SIGNAL
-========================================= */
+/* =====================================================
+   FETCH CANDLES
+===================================================== */
+
+async function fetchCandles() {
+
+    try {
+
+        const response =
+            await fetch(CANDLES_URL + "?t=" + Date.now());
+
+        if (!response.ok) {
+            throw new Error("Candle request failed");
+        }
+
+        const data =
+            await response.json();
+
+        candles =
+            Array.isArray(data.candles)
+            ? data.candles
+            : [];
+
+        candleCountElement.textContent =
+            candles.length;
+
+        if (candles.length > 0) {
+
+            const last =
+                candles[candles.length - 1];
+
+            priceElement.textContent =
+                Number(last.close).toFixed(6);
+
+            chartInfoElement.textContent =
+                "100 × 1-minute candles";
+
+        }
+
+        drawChart();
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+    }
+
+}
+
+
+/* =====================================================
+   UPDATE SIGNAL UI
+===================================================== */
 
 function updateSignal(data) {
 
@@ -562,273 +626,228 @@ function updateSignal(data) {
         return;
     }
 
-
-    const signal =
-        data.signal.signal || "WAIT";
-
-
-    const score =
-        data.signal.score || "--";
-
-
-    const rsi =
-        data.signal.rsi;
-
-
-    const ema9 =
-        data.signal.ema9;
-
-
-    const ema21 =
-        data.signal.ema21;
-
-
-    const price =
-        data.signal.price;
-
-
-    latestPrice = price;
-
-
-    $("signal").textContent =
-        signal;
-
-
-    $("signal").className =
-        "signal-value "
-        +
-        signal.toLowerCase();
-
-
-    $("confidence").textContent =
-        "Score: "
-        +
-        score;
-
-
-    if (rsi !== undefined) {
-
-        $("rsi").textContent =
-            Number(rsi).toFixed(2);
-
-
-        let state =
-            "Neutral";
-
-
-        if (rsi >= 70) {
-
-            state = "Overbought";
-
-        }
-
-        else if (rsi <= 30) {
-
-            state = "Oversold";
-
-        }
-
-        else if (rsi > 50) {
-
-            state = "Bullish zone";
-
-        }
-
-        else {
-
-            state = "Bearish zone";
-
-        }
-
-
-        $("rsiState").textContent =
-            state;
-
-    }
-
-
-    if (
-        ema9 !== undefined &&
-        ema21 !== undefined
-    ) {
-
-        $("ema").textContent =
-            Number(ema9).toFixed(6)
-            +
-            " / "
-            +
-            Number(ema21).toFixed(6);
-
-
-        $("trend").textContent =
-            "Trend: "
-            +
-            (
-                Number(ema9) > Number(ema21)
-                    ? "Bullish"
-                    :
-                    Number(ema9) < Number(ema21)
-                        ? "Bearish"
-                        : "Neutral"
-            );
-
-    }
-
-
-    $("price").textContent =
-        "Price: "
-        +
-        formatPrice(price);
-
-
-    $("assetLabel").textContent =
-        "EUR/USD";
-
+    const s =
+        data.signal;
 
     const stream =
-        data.stream;
+        data.stream || {};
+
+    signalElement.textContent =
+        s.signal || "WAIT";
+
+    scoreElement.textContent =
+        "Score: " + (s.score || "--");
+
+    priceElement.textContent =
+        s.price
+        ? Number(s.price).toFixed(6)
+        : "--";
+
+    rsiElement.textContent =
+        s.rsi !== undefined
+        ? Number(s.rsi).toFixed(2)
+        : "--";
+
+    ema9Element.textContent =
+        s.ema9 !== undefined
+        ? Number(s.ema9).toFixed(6)
+        : "--";
+
+    ema21Element.textContent =
+        s.ema21 !== undefined
+        ? Number(s.ema21).toFixed(6)
+        : "--";
 
 
-    if (
-        stream &&
-        stream.status === "streaming"
-    ) {
+    /* SIGNAL COLOR */
 
-        $("momentum").textContent =
-            "LIVE";
+    signalElement.classList.remove(
+        "call",
+        "put",
+        "wait"
+    );
 
-        $("momentum").className =
-            "metric live";
+    if (s.signal === "CALL") {
 
-        $("momentumState").textContent =
-            "EURUSD • 1 minute";
+        signalElement.classList.add("call");
+
+    }
+
+    else if (s.signal === "PUT") {
+
+        signalElement.classList.add("put");
 
     }
 
     else {
 
-        $("momentum").textContent =
-            "OFFLINE";
-
-        $("momentum").className =
-            "metric offline";
-
-        $("momentumState").textContent =
-            stream
-                ? stream.status
-                : "Disconnected";
+        signalElement.classList.add("wait");
 
     }
 
 
-    const candleCount =
-        data.candles_available || 0;
+    /* CONNECTION */
+
+    if (stream.status === "streaming") {
+
+        connectionElement.textContent =
+            "● LIVE";
+
+        connectionElement.classList.add("live");
+
+    }
+
+    else {
+
+        connectionElement.textContent =
+            String(
+                stream.status || "CONNECTING"
+            ).toUpperCase();
+
+        connectionElement.classList.remove(
+            "live"
+        );
+
+    }
 
 
-    $("status").textContent =
-        "Live stream • "
-        +
-        candleCount
-        +
-        " candles available • Updated "
-        +
-        new Date().toLocaleTimeString();
+    /* MOMENTUM */
+
+    if (candles.length >= 4) {
+
+        const a =
+            candles[candles.length - 4].close;
+
+        const b =
+            candles[candles.length - 1].close;
+
+        const momentum =
+            b - a;
+
+        momentumElement.textContent =
+            momentum >= 0
+            ? "+" + momentum.toFixed(6)
+            : momentum.toFixed(6);
+
+    }
 
 
-    addHistory(
-        signal,
-        rsi,
-        score
-    );
+    /* SIGNAL HISTORY */
 
+    if (
+        lastSignal !== s.signal ||
+        signalHistory.length === 0
+    ) {
 
-    drawChart();
+        addHistory(
+            s.signal,
+            s.score,
+            s.price
+        );
+
+        lastSignal =
+            s.signal;
+
+    }
 
 }
 
 
-/* =========================================
-   SIGNAL HISTORY
-========================================= */
+/* =====================================================
+   ADD HISTORY
+===================================================== */
 
 function addHistory(
     signal,
-    rsi,
-    score
+    score,
+    price
 ) {
 
     const now =
         new Date();
 
-
     const time =
-        now.toLocaleTimeString(
-            [],
-            {
-                hour: "2-digit",
-                minute: "2-digit",
-                second: "2-digit"
-            }
-        );
+        now.toLocaleTimeString();
+
+    signalHistory.unshift({
+
+        signal:
+            signal || "WAIT",
+
+        score:
+            score || "--",
+
+        price:
+            price || "--",
+
+        time:
+            time
+
+    });
 
 
-    const last =
-        history[0];
+    /* Keep last 10 */
+
+    signalHistory =
+        signalHistory.slice(0, 10);
 
 
-    if (
-        last &&
-        last.signal === signal &&
-        last.score === score
-    ) {
+    renderHistory();
+
+}
+
+
+/* =====================================================
+   RENDER HISTORY
+===================================================== */
+
+function renderHistory() {
+
+    if (signalHistory.length === 0) {
+
+        historyElement.innerHTML =
+            '<div class="history-row">' +
+            '<span>Waiting for signals...</span>' +
+            '</div>';
 
         return;
 
     }
 
 
-    history.unshift({
+    historyElement.innerHTML =
+        signalHistory.map(item => {
 
-        time: time,
+            let cls =
+                "history-wait";
 
-        signal: signal,
+            if (item.signal === "CALL") {
+                cls = "history-call";
+            }
 
-        rsi:
-            rsi !== undefined
-                ? Number(rsi).toFixed(1)
-                : "--",
-
-        score: score
-
-    });
-
-
-    history =
-        history.slice(0, 8);
-
-
-    $("historyRows").innerHTML =
-        history.map(function(item) {
+            if (item.signal === "PUT") {
+                cls = "history-put";
+            }
 
             return `
 
                 <div class="history-row">
 
-                    <div>
+                    <span>
                         ${item.time}
-                    </div>
+                    </span>
 
-                    <div class="history-${item.signal.toLowerCase()}">
+                    <strong class="${cls}">
                         ${item.signal}
-                    </div>
+                    </strong>
 
-                    <div>
-                        ${item.rsi}
-                    </div>
-
-                    <div>
+                    <span>
                         ${item.score}
-                    </div>
+                    </span>
+
+                    <span>
+                        ${Number(item.price).toFixed(6)}
+                    </span>
 
                 </div>
 
@@ -839,115 +858,50 @@ function addHistory(
 }
 
 
-/* =========================================
-   FETCH LIVE DATA
-========================================= */
-
-async function fetchLiveData() {
-
-    try {
-
-        const response =
-            await fetch(
-                API_URL + "/live-signal",
-                {
-                    cache: "no-store"
-                }
-            );
-
-
-        if (!response.ok) {
-
-            throw new Error(
-                "HTTP " + response.status
-            );
-
-        }
-
-
-        const data =
-            await response.json();
-
-
-        updateSignal(data);
-
-    }
-
-    catch (error) {
-
-        $("momentum").textContent =
-            "OFFLINE";
-
-        $("momentum").className =
-            "metric offline";
-
-
-        $("momentumState").textContent =
-            "Backend unavailable";
-
-
-        $("status").textContent =
-            "Connection error: "
-            +
-            error.message;
-
-    }
-
-}
-
-
-/* =========================================
-   RESIZE CANVAS
-========================================= */
+/* =====================================================
+   CANVAS RESIZE
+===================================================== */
 
 function resizeCanvas() {
-
-    const ratio =
-        window.devicePixelRatio || 1;
-
 
     const rect =
         canvas.getBoundingClientRect();
 
+    const dpr =
+        window.devicePixelRatio || 1;
 
     canvas.width =
-        Math.max(
-            1,
-            rect.width * ratio
-        );
-
+        rect.width * dpr;
 
     canvas.height =
-        Math.max(
-            1,
-            rect.height * ratio
-        );
-
+        rect.height * dpr;
 
     ctx.setTransform(
-        ratio,
+        dpr,
         0,
         0,
-        ratio,
+        dpr,
         0,
         0
     );
 
-
-    drawChart();
-
 }
 
 
-/* =========================================
-   LIVE PRICE DISPLAY
-========================================= */
+/* =====================================================
+   DRAW CHART
+===================================================== */
 
 function drawChart() {
 
+    if (!candles || candles.length === 0) {
+        return;
+    }
+
+    resizeCanvas();
+
     const width =
         canvas.clientWidth;
-
 
     const height =
         canvas.clientHeight;
@@ -961,9 +915,12 @@ function drawChart() {
     );
 
 
-    ctx.fillStyle =
-        "#06101c";
+    /* -------------------------------------------------
+       BACKGROUND
+    ------------------------------------------------- */
 
+    ctx.fillStyle =
+        "#07111f";
 
     ctx.fillRect(
         0,
@@ -973,27 +930,65 @@ function drawChart() {
     );
 
 
-    ctx.strokeStyle =
-        "#17283b";
+    /* -------------------------------------------------
+       VISIBLE CANDLES
+    ------------------------------------------------- */
 
+    const visible =
+        candles.slice(-70);
+
+
+    let minPrice =
+        Infinity;
+
+    let maxPrice =
+        -Infinity;
+
+
+    visible.forEach(c => {
+
+        minPrice =
+            Math.min(
+                minPrice,
+                Number(c.low)
+            );
+
+        maxPrice =
+            Math.max(
+                maxPrice,
+                Number(c.high)
+            );
+
+    });
+
+
+    const range =
+        maxPrice - minPrice || 0.001;
+
+
+    const paddingTop = 25;
+    const paddingBottom = 30;
+    const chartHeight =
+        height -
+        paddingTop -
+        paddingBottom;
+
+
+    /* -------------------------------------------------
+       GRID
+    ------------------------------------------------- */
+
+    ctx.strokeStyle =
+        "#15283b";
 
     ctx.lineWidth = 1;
 
 
-    for (
-        let i = 0;
-        i < 5;
-        i++
-    ) {
+    for (let i = 0; i <= 5; i++) {
 
         const y =
-            20
-            +
-            i *
-            (
-                (height - 40) / 4
-            );
-
+            paddingTop +
+            (chartHeight / 5) * i;
 
         ctx.beginPath();
 
@@ -1012,104 +1007,242 @@ function drawChart() {
     }
 
 
-    if (latestPrice === null) {
+    /* -------------------------------------------------
+       CANDLE WIDTH
+    ------------------------------------------------- */
 
-        ctx.fillStyle =
-            "#52657b";
+    const spacing =
+        width / visible.length;
 
-        ctx.font =
-            "13px Arial";
-
-        ctx.fillText(
-            "Waiting for live price...",
-            20,
-            height / 2
+    const candleWidth =
+        Math.max(
+            3,
+            spacing * 0.62
         );
 
-        return;
 
-    }
+    /* -------------------------------------------------
+       DRAW CANDLES
+    ------------------------------------------------- */
+
+    visible.forEach((candle, index) => {
+
+        const open =
+            Number(candle.open);
+
+        const high =
+            Number(candle.high);
+
+        const low =
+            Number(candle.low);
+
+        const close =
+            Number(candle.close);
 
 
-    const centerY =
-        height / 2;
+        const x =
+            spacing * index +
+            spacing / 2;
+
+
+        function priceToY(price) {
+
+            return (
+                paddingTop +
+                (
+                    maxPrice - price
+                ) / range *
+                chartHeight
+            );
+
+        }
+
+
+        const yOpen =
+            priceToY(open);
+
+        const yClose =
+            priceToY(close);
+
+        const yHigh =
+            priceToY(high);
+
+        const yLow =
+            priceToY(low);
+
+
+        const bullish =
+            close >= open;
+
+
+        /* WICK */
+
+        ctx.strokeStyle =
+            bullish
+            ? "#35f58a"
+            : "#ff4d6d";
+
+        ctx.lineWidth = 1;
+
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            x,
+            yHigh
+        );
+
+        ctx.lineTo(
+            x,
+            yLow
+        );
+
+        ctx.stroke();
+
+
+        /* BODY */
+
+        const bodyTop =
+            Math.min(
+                yOpen,
+                yClose
+            );
+
+        const bodyHeight =
+            Math.max(
+                1,
+                Math.abs(
+                    yClose - yOpen
+                )
+            );
+
+
+        ctx.fillStyle =
+            bullish
+            ? "#35f58a"
+            : "#ff4d6d";
+
+
+        ctx.fillRect(
+
+            x - candleWidth / 2,
+
+            bodyTop,
+
+            candleWidth,
+
+            bodyHeight
+
+        );
+
+    });
+
+
+    /* -------------------------------------------------
+       CURRENT PRICE LINE
+    ------------------------------------------------- */
+
+    const latest =
+        visible[visible.length - 1];
+
+    const currentPrice =
+        Number(latest.close);
+
+
+    const priceY =
+        paddingTop +
+        (
+            maxPrice - currentPrice
+        ) / range *
+        chartHeight;
 
 
     ctx.strokeStyle =
-        "#2edb87";
+        "#ffffff";
 
-    ctx.lineWidth = 2;
+    ctx.setLineDash([
+        5,
+        5
+    ]);
+
+    ctx.lineWidth = 1;
 
 
     ctx.beginPath();
 
     ctx.moveTo(
-        10,
-        centerY
+        0,
+        priceY
     );
 
     ctx.lineTo(
-        width - 10,
-        centerY
+        width,
+        priceY
     );
 
     ctx.stroke();
 
+    ctx.setLineDash([]);
+
+
+    /* -------------------------------------------------
+       PRICE LABEL
+    ------------------------------------------------- */
 
     ctx.fillStyle =
-        "#e8eef7";
+        "#ffffff";
 
     ctx.font =
-        "12px Arial";
-
+        "11px Arial";
 
     ctx.fillText(
-        formatPrice(latestPrice),
-        width - 80,
-        centerY - 8
+
+        currentPrice.toFixed(6),
+
+        8,
+
+        Math.max(
+            15,
+            priceY - 5
+        )
+
     );
 
 }
 
 
-/* =========================================
-   MANUAL REFRESH
-========================================= */
-
-$("refresh").addEventListener(
-    "click",
-    fetchLiveData
-);
-
-
-/* =========================================
-   RESIZE
-========================================= */
-
-window.addEventListener(
-    "resize",
-    resizeCanvas
-);
-
-
-/* =========================================
+/* =====================================================
    START
-========================================= */
+===================================================== */
 
-resizeCanvas();
+async function refresh() {
 
-fetchLiveData();
+    await fetchSignal();
+
+    await fetchCandles();
+
+}
+
+
+/* Initial */
+
+refresh();
 
 
 /* Update every 2 seconds */
 
 setInterval(
-    fetchLiveData,
+    refresh,
     2000
 );
 
 
-})();
+/* Resize */
+
+window.addEventListener(
+    "resize",
+    drawChart
+);
 
 </script>
 
