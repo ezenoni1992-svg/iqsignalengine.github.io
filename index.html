@@ -69,13 +69,30 @@ async function signalData(){try{let d;try{d=await apiFetch("/v3-signal")}catch(_
 async function eventData(){try{const d=await apiFetch("/v3-event"),e=d.event||{},s=d.current_signal||d.signal||{};setText("decisionId",e.decision_id??0);setText("newDecision",e.new_decision?"YES":"NO");setText("signalChanged",e.signal_changed?"YES":"NO");setText("previousSignal",e.previous_signal||"WAIT");setText("eventSignal",e.signal||s.signal||"WAIT");if(e.new_decision&&e.decision_id!==lastDecisionId){lastDecisionId=e.decision_id;historyAdd(e,s);if(alertEnabled&&(e.signal==="CALL"||e.signal==="PUT")&&s.confirmation==="CONFIRMED"&&e.decision_id!==lastAlertDecisionId){lastAlertDecisionId=e.decision_id;alertSignal(e.signal,e.decision_id)}}}catch(e){}}
 function historyAdd(e,s){decisionHistory.unshift({id:e.decision_id,signal:e.signal||"WAIT",quality:s.quality||"WAIT",confirmation:s.confirmation||"WAITING",score:s.score||"0/5",time:e.decision_candle?fmt(e.decision_candle):"--"});decisionHistory=decisionHistory.slice(0,30);renderHistory()}
 function renderHistory(){const c=el("history");if(!decisionHistory.length){c.innerHTML="No decisions yet.";return}c.innerHTML=decisionHistory.map(x=>{const cl=x.signal==="CALL"?"call":x.signal==="PUT"?"put":"wait";return `<div class="history-item"><div class="history-top"><strong>#${x.id} - <span class="${cl}">${x.signal}</span></strong><span class="small">${x.time}</span></div><div>Score: <strong>${x.score}</strong></div><div>Quality: ${x.quality}</div><div>Confirmation: ${x.confirmation}</div></div>`}).join("")}
-async function candles(){try{const d=await apiFetch("/live-candles");latestCandles=Array.isArray(d)?d:(Array.isArray(d.candles)?d.candles:[]);if(latestCandles.length)draw(latestCandles)}catch(e){}}
-function draw(cs){const c=el("chart"),r=c.getBoundingClientRect(),p=devicePixelRatio||1;c.width=r.width*p;c.height=300*p;const x=c.getContext("2d");x.scale(p,p);const w=r.width,h=300,v=cs.slice(-50),hi=v.map(a=>+a.high),lo=v.map(a=>+a.low),max=Math.max(...hi),min=Math.min(...lo),range=max-min||1,cw=w/v.length;v.forEach((a,i)=>{const o=+a.open,cl=+a.close,hg=+a.high,l=+a.low,X=i*cw+cw/2,Y=z=>15+(max-z)/range*(h-40),up=cl>=o;x.strokeStyle=up?"#27e889":"#ff5964";x.beginPath();x.moveTo(X,Y(hg));x.lineTo(X,Y(l));x.stroke();x.fillStyle=up?"#27e889":"#ff5964";x.fillRect(X-Math.max(3,cw*.55)/2,Math.min(Y(o),Y(cl)),Math.max(3,cw*.55),Math.max(1,Math.abs(Y(cl)-Y(o))))});const q=+v[v.length-1].close,y=Y(q);x.beginPath();x.moveTo(0,y);x.lineTo(w,y);x.setLineDash([5,5]);x.strokeStyle="#7892aa";x.stroke();x.setLineDash([]);x.fillStyle="#fff";x.font="11px Arial";x.fillText(q.toFixed(6),5,Math.max(12,y-5))}
+async function candles(){try{const d=await apiFetch("/live-candles");latestCandles=Array.isArray(d)?d:(Array.isArray(d.candles)?d.candles:[]);if(latestCandles.length){draw(latestCandles);const last=latestCandles[latestCandles.length-1];if(last&&last.close!==undefined)setText("price",fmtNumber(last.close,6))}}catch(e){}}
+function draw(cs){const c=el("chart"),r=c.getBoundingClientRect(),p=devicePixelRatio||1;c.width=r.width*p;c.height=300*p;const x=c.getContext("2d");x.scale(p,p);const w=r.width,h=300,v=cs.slice(-50),hi=v.map(a=>+(a.high??a.max)),lo=v.map(a=>+(a.low??a.min)),max=Math.max(...hi),min=Math.min(...lo),range=max-min||1,cw=w/v.length;v.forEach((a,i)=>{const o=+a.open,cl=+a.close,hg=+(a.high??a.max),l=+(a.low??a.min),X=i*cw+cw/2,Y=z=>15+(max-z)/range*(h-40),up=cl>=o;x.strokeStyle=up?"#27e889":"#ff5964";x.beginPath();x.moveTo(X,Y(hg));x.lineTo(X,Y(l));x.stroke();x.fillStyle=up?"#27e889":"#ff5964";x.fillRect(X-Math.max(3,cw*.55)/2,Math.min(Y(o),Y(cl)),Math.max(3,cw*.55),Math.max(1,Math.abs(Y(cl)-Y(o))))});const q=+v[v.length-1].close,y=Y(q);x.beginPath();x.moveTo(0,y);x.lineTo(w,y);x.setLineDash([5,5]);x.strokeStyle="#7892aa";x.stroke();x.setLineDash([]);x.fillStyle="#fff";x.font="11px Arial";x.fillText(q.toFixed(6),5,Math.max(12,y-5))}
 function fmt(t){return new Date(+t*1000).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit",second:"2-digit"})}
 function countdown(){const n=Math.floor(Date.now()/1000),cur=Math.floor(n/60)*60,next=cur+60;setText("countdown",Math.max(0,next-n));setText("currentCandle",fmt(cur));setText("nextDecision",fmt(next))}
 function sound(type){try{audioContext??=new(window.AudioContext||window.webkitAudioContext)();audioContext.resume();const o=audioContext.createOscillator(),g=audioContext.createGain();o.connect(g);g.connect(audioContext.destination);o.frequency.value=type==="CALL"?880:440;g.gain.setValueAtTime(.001,audioContext.currentTime);g.gain.exponentialRampToValueAtTime(.25,audioContext.currentTime+.03);g.gain.exponentialRampToValueAtTime(.001,audioContext.currentTime+.6);o.start();o.stop(audioContext.currentTime+.6)}catch(e){}}
 function alertSignal(s,id){sound(s);toast("🔔 NEW CONFIRMED "+s+" — Decision #"+id);document.body.classList.add("flash");setTimeout(()=>document.body.classList.remove("flash"),600);if("Notification"in window&&Notification.permission==="granted")new Notification("IQ Signal Engine",{body:"Confirmed "+s+" signal. Decision #"+id})}
 el("alertButton").onclick=async()=>{alertEnabled=true;if("Notification"in window)try{await Notification.requestPermission()}catch(e){}try{audioContext??=new(window.AudioContext||window.webkitAudioContext)();await audioContext.resume()}catch(e){}el("alertButton").innerText="🔔 Alerts Enabled";toast("Alerts enabled.")};
+async function streamStatus(){
+  try{
+    const d=await apiFetch("/stream-status");
+    const ok=d && (d.connected===true || d.status==="streaming");
+    setText("connectionStatus",ok?"CONNECTED":"OFFLINE");
+    el("connectionStatus").className="status-value "+(ok?"online":"offline");
+    setText("asset",d.asset||"USDJPY-OTC");
+    setText("timeframe",d.timeframe?String(d.timeframe)+" SEC":"60 SEC");
+    setText("streamStatus",d.status||"--");
+    setText("threadStatus",d.stream_started?"STARTED":(d.connected?"CONNECTED":"--"));
+    setText("cachedCandles",d.realtime_candle_count??d.candle_count??"--");
+  }catch(e){
+    setText("connectionStatus","OFFLINE");
+    el("connectionStatus").className="status-value offline";
+    setText("streamStatus","OFFLINE");
+  }
+}
 async function refresh(){
   await Promise.allSettled([streamStatus(),signalData(),eventData(),candles()]);
 }
