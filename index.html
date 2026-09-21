@@ -46,9 +46,9 @@ function setText(id,v){const e=el(id);if(e)e.innerText=v===undefined||v===null?"
 function firstDefined(o,...keys){for(const k of keys){if(o&&o[k]!==undefined&&o[k]!==null)return o[k]}return undefined}
 function fmtNumber(v,d=6){const n=Number(v);return v===undefined||v===null||Number.isNaN(n)?"--":n.toFixed(d)}
 function toast(m){const t=el("toast");t.innerText=m;t.style.display="block";setTimeout(()=>t.style.display="none",3000)}
-async function apiFetch(endpoint){
+async function apiFetch(endpoint, timeoutMs=8000, showErrors=true){
   const controller=new AbortController();
-  const timer=setTimeout(()=>controller.abort(),8000);
+  const timer=setTimeout(()=>controller.abort(),timeoutMs);
   try{
     const url=API_BASE.replace(/\/$/,"")+endpoint;
     const r=await fetch(url,{method:"GET",cache:"no-store",headers:{"Accept":"application/json"},signal:controller.signal});
@@ -56,21 +56,46 @@ async function apiFetch(endpoint){
     const d=await r.json();
     apiWorking=true;apiStatus();return d;
   }catch(e){
-    apiWorking=false;apiStatus();
-    const msg=e.name==="AbortError"?"TIMEOUT after 8s":(e.message||"FETCH FAILED");
-    showError(endpoint+": "+msg+" — If the endpoint opens directly in the browser but this fails here, the backend CORS policy is blocking the website.");
+    if(showErrors){
+      apiWorking=false;apiStatus();
+      const msg=e.name==="AbortError"?"TIMEOUT after "+(timeoutMs/1000)+"s":(e.message||"FETCH FAILED");
+      showError(endpoint+": "+msg);
+    }
     throw e;
   }finally{clearTimeout(timer)}
 }
 function apiStatus(){const e=el("apiStatus");e.innerText=apiWorking?"ONLINE":"OFFLINE";e.className="data-value "+(apiWorking?"online":"offline")}
 function showError(m){const e=el("apiError");e.style.display="block";e.innerText="API ERROR: "+m}
 function clearError(){el("apiError").style.display="none"}
-async function signalData(){try{let d;try{d=await apiFetch("/v3-signal")}catch(_){d=null}if(!d){d=await apiFetch("/v3-event")}let s=d&&d.current_signal?d.current_signal:(d&&d.signal&&typeof d.signal==="object"?d.signal:d);if(!s||typeof s!=="object")throw Error("Invalid signal response");const finalSignal=s.signal||"WAIT";setText("signal",finalSignal);setText("quality",s.quality||"WAIT");setText("confirmation",s.confirmation||"WAITING");setText("score",s.score!==undefined?s.score+"/"+(s.max_score??5):(firstDefined(s,"bullish_score")!==undefined?String(firstDefined(s,"bullish_score"))+"/"+String(firstDefined(s,"max_score")??5):"0/5"));setText("rawSignal",s.raw_signal||"WAIT");setText("state",s.state||finalSignal);setText("maxScore",firstDefined(s,"max_score")??5);setText("bullishScore",firstDefined(s,"bullish_score")??"--");setText("bearishScore",firstDefined(s,"bearish_score")??"--");setText("conflict",s.conflict?"YES":"NO");setText("price",firstDefined(s,"price","close","market_price")!==undefined?fmtNumber(firstDefined(s,"price","close","market_price"),6):"--");setText("trend",s.trend||"--");setText("rsi",s.rsi!==undefined?fmtNumber(s.rsi,2):"--");setText("rsiSignal",s.rsi_signal||"--");setText("momentum",s.momentum_signal||s.momentum||"--");setText("momentumValue",s.momentum!==undefined?fmtNumber(s.momentum,6):"--");setText("candleStrength",s.candle_signal||s.candle_strength||"--");setText("candleStrengthValue",s.candle_strength!==undefined?fmtNumber(s.candle_strength,3):"--");setText("emaSlope",s.slope_signal||s.ema_slope||"--");setText("slopeSignal",s.slope_signal||"--");setText("momentumSignal",s.momentum_signal||"--");setText("candleSignal",s.candle_signal||"--");setText("ema9",firstDefined(s,"ema9","ema_fast")!==undefined?fmtNumber(firstDefined(s,"ema9","ema_fast"),6):"--");setText("ema21",firstDefined(s,"ema21","ema_slow")!==undefined?fmtNumber(firstDefined(s,"ema21","ema_slow"),6):"--");setText("callScore",firstDefined(s,"call_score","bullish_score")??"--");setText("putScore",firstDefined(s,"put_score","bearish_score")??"--");setText("candlesAvailable",d.candles_available??s.candle_count??"--");setText("decisionCandle",s.decision_candle?fmt(s.decision_candle):"--");setText("decisionCandleId",firstDefined(s,"decision_candle_id")??"--");const rs=Array.isArray(s.reasons)?s.reasons:[];setText("reasons",rs.length?"Reasons: "+rs.join(" • "):"");setText("filterReason",s.filter_reason?"Filter: "+s.filter_reason:"");const e=el("signal");e.className="signal "+(finalSignal==="CALL"?"call":finalSignal==="PUT"?"put":"wait")}catch(e){setText("signal","OFFLINE");showError("Signal data: "+e.message)}}
+async function signalData(){try{let d;try{d=await apiFetch("/v3-signal")}catch(_){d=null}if(!d){d=await apiFetch("/v3-event")}let s=d&&d.current_signal?d.current_signal:(d&&d.signal&&typeof d.signal==="object"?d.signal:d);if(!s||typeof s!=="object")throw Error("Invalid signal response");const finalSignal=s.signal||"WAIT";clearError();setText("signal",finalSignal);setText("quality",s.quality||"WAIT");setText("confirmation",s.confirmation||"WAITING");setText("score",s.score!==undefined?s.score+"/"+(s.max_score??5):(firstDefined(s,"bullish_score")!==undefined?String(firstDefined(s,"bullish_score"))+"/"+String(firstDefined(s,"max_score")??5):"0/5"));setText("rawSignal",s.raw_signal||"WAIT");setText("state",s.state||finalSignal);setText("maxScore",firstDefined(s,"max_score")??5);setText("bullishScore",firstDefined(s,"bullish_score")??"--");setText("bearishScore",firstDefined(s,"bearish_score")??"--");setText("conflict",s.conflict?"YES":"NO");setText("price",firstDefined(s,"price","close","market_price")!==undefined?fmtNumber(firstDefined(s,"price","close","market_price"),6):"--");setText("trend",s.trend||"--");setText("rsi",s.rsi!==undefined?fmtNumber(s.rsi,2):"--");setText("rsiSignal",s.rsi_signal||"--");setText("momentum",s.momentum_signal||s.momentum||"--");setText("momentumValue",s.momentum!==undefined?fmtNumber(s.momentum,6):"--");setText("candleStrength",s.candle_signal||s.candle_strength||"--");setText("candleStrengthValue",s.candle_strength!==undefined?fmtNumber(s.candle_strength,3):"--");setText("emaSlope",s.slope_signal||s.ema_slope||"--");setText("slopeSignal",s.slope_signal||"--");setText("momentumSignal",s.momentum_signal||"--");setText("candleSignal",s.candle_signal||"--");setText("ema9",firstDefined(s,"ema9","ema_fast")!==undefined?fmtNumber(firstDefined(s,"ema9","ema_fast"),6):"--");setText("ema21",firstDefined(s,"ema21","ema_slow")!==undefined?fmtNumber(firstDefined(s,"ema21","ema_slow"),6):"--");setText("callScore",firstDefined(s,"call_score","bullish_score")??"--");setText("putScore",firstDefined(s,"put_score","bearish_score")??"--");setText("candlesAvailable",d.candles_available??s.candle_count??"--");setText("decisionCandle",s.decision_candle?fmt(s.decision_candle):"--");setText("decisionCandleId",firstDefined(s,"decision_candle_id")??"--");const rs=Array.isArray(s.reasons)?s.reasons:[];setText("reasons",rs.length?"Reasons: "+rs.join(" • "):"");setText("filterReason",s.filter_reason?"Filter: "+s.filter_reason:"");const e=el("signal");e.className="signal "+(finalSignal==="CALL"?"call":finalSignal==="PUT"?"put":"wait")}catch(e){setText("signal","OFFLINE");showError("Signal data: "+e.message)}}
 async function eventData(){try{const d=await apiFetch("/v3-event"),e=d.event||{},s=d.current_signal||d.signal||{};setText("decisionId",e.decision_id??0);setText("newDecision",e.new_decision?"YES":"NO");setText("signalChanged",e.signal_changed?"YES":"NO");setText("previousSignal",e.previous_signal||"WAIT");setText("eventSignal",e.signal||s.signal||"WAIT");if(e.new_decision&&e.decision_id!==lastDecisionId){lastDecisionId=e.decision_id;historyAdd(e,s);if(alertEnabled&&(e.signal==="CALL"||e.signal==="PUT")&&s.confirmation==="CONFIRMED"&&e.decision_id!==lastAlertDecisionId){lastAlertDecisionId=e.decision_id;alertSignal(e.signal,e.decision_id)}}}catch(e){}}
 function historyAdd(e,s){decisionHistory.unshift({id:e.decision_id,signal:e.signal||"WAIT",quality:s.quality||"WAIT",confirmation:s.confirmation||"WAITING",score:s.score||"0/5",time:e.decision_candle?fmt(e.decision_candle):"--"});decisionHistory=decisionHistory.slice(0,30);renderHistory()}
 function renderHistory(){const c=el("history");if(!decisionHistory.length){c.innerHTML="No decisions yet.";return}c.innerHTML=decisionHistory.map(x=>{const cl=x.signal==="CALL"?"call":x.signal==="PUT"?"put":"wait";return `<div class="history-item"><div class="history-top"><strong>#${x.id} - <span class="${cl}">${x.signal}</span></strong><span class="small">${x.time}</span></div><div>Score: <strong>${x.score}</strong></div><div>Quality: ${x.quality}</div><div>Confirmation: ${x.confirmation}</div></div>`}).join("")}
-async function candles(){try{const d=await apiFetch("/live-candles");latestCandles=Array.isArray(d)?d:(Array.isArray(d.candles)?d.candles:[]);if(latestCandles.length){draw(latestCandles);const last=latestCandles[latestCandles.length-1];if(last&&last.close!==undefined)setText("price",fmtNumber(last.close,6))}}catch(e){}}
-function draw(cs){const c=el("chart"),r=c.getBoundingClientRect(),p=devicePixelRatio||1;c.width=r.width*p;c.height=300*p;const x=c.getContext("2d");x.scale(p,p);const w=r.width,h=300,v=cs.slice(-50),hi=v.map(a=>+(a.high??a.max)),lo=v.map(a=>+(a.low??a.min)),max=Math.max(...hi),min=Math.min(...lo),range=max-min||1,cw=w/v.length;v.forEach((a,i)=>{const o=+a.open,cl=+a.close,hg=+(a.high??a.max),l=+(a.low??a.min),X=i*cw+cw/2,Y=z=>15+(max-z)/range*(h-40),up=cl>=o;x.strokeStyle=up?"#27e889":"#ff5964";x.beginPath();x.moveTo(X,Y(hg));x.lineTo(X,Y(l));x.stroke();x.fillStyle=up?"#27e889":"#ff5964";x.fillRect(X-Math.max(3,cw*.55)/2,Math.min(Y(o),Y(cl)),Math.max(3,cw*.55),Math.max(1,Math.abs(Y(cl)-Y(o))))});const q=+v[v.length-1].close,y=Y(q);x.beginPath();x.moveTo(0,y);x.lineTo(w,y);x.setLineDash([5,5]);x.strokeStyle="#7892aa";x.stroke();x.setLineDash([]);x.fillStyle="#fff";x.font="11px Arial";x.fillText(q.toFixed(6),5,Math.max(12,y-5))}
+let candleBusy=false;
+async function candles(){
+  if(candleBusy)return;
+  candleBusy=true;
+  try{
+    const d=await apiFetch("/live-candles",15000,false);
+    latestCandles=Array.isArray(d)?d:(Array.isArray(d&&d.candles)?d.candles:[]);
+    if(latestCandles.length){
+      draw(latestCandles);
+      const last=latestCandles[latestCandles.length-1];
+      if(last&&last.close!==undefined)setText("price",fmtNumber(last.close,6));
+    }
+  }catch(e){
+    console.log("Live candles temporarily unavailable:",e.message||e);
+  }finally{candleBusy=false;}
+}
+function draw(cs){
+  const c=el("chart"),r=c.getBoundingClientRect(),p=devicePixelRatio||1;c.width=r.width*p;c.height=300*p;
+  const x=c.getContext("2d");x.scale(p,p);
+  const w=r.width,h=300,v=cs.slice(-50);if(!v.length)return;
+  const hi=v.map(a=>+(a.max??a.high)),lo=v.map(a=>+(a.min??a.low)),max=Math.max(...hi),min=Math.min(...lo),range=max-min||1,cw=w/v.length;
+  const Y=z=>15+(max-z)/range*(h-40);
+  v.forEach((a,i)=>{const o=+a.open,cl=+a.close,hg=+(a.max??a.high),l=+(a.min??a.low),X=i*cw+cw/2,up=cl>=o;x.strokeStyle=up?"#27e889":"#ff5964";x.beginPath();x.moveTo(X,Y(hg));x.lineTo(X,Y(l));x.stroke();x.fillStyle=up?"#27e889":"#ff5964";x.fillRect(X-Math.max(3,cw*.55)/2,Math.min(Y(o),Y(cl)),Math.max(3,cw*.55),Math.max(1,Math.abs(Y(cl)-Y(o))))});
+  const q=+v[v.length-1].close,y=Y(q);x.beginPath();x.moveTo(0,y);x.lineTo(w,y);x.setLineDash([5,5]);x.strokeStyle="#7892aa";x.stroke();x.setLineDash([]);x.fillStyle="#fff";x.font="11px Arial";x.fillText(q.toFixed(6),5,Math.max(12,y-5))
+}
 function fmt(t){return new Date(+t*1000).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit",second:"2-digit"})}
 function countdown(){const n=Math.floor(Date.now()/1000),cur=Math.floor(n/60)*60,next=cur+60;setText("countdown",Math.max(0,next-n));setText("currentCandle",fmt(cur));setText("nextDecision",fmt(next))}
 function sound(type){try{audioContext??=new(window.AudioContext||window.webkitAudioContext)();audioContext.resume();const o=audioContext.createOscillator(),g=audioContext.createGain();o.connect(g);g.connect(audioContext.destination);o.frequency.value=type==="CALL"?880:440;g.gain.setValueAtTime(.001,audioContext.currentTime);g.gain.exponentialRampToValueAtTime(.25,audioContext.currentTime+.03);g.gain.exponentialRampToValueAtTime(.001,audioContext.currentTime+.6);o.start();o.stop(audioContext.currentTime+.6)}catch(e){}}
@@ -93,10 +118,15 @@ async function streamStatus(){
     setText("streamStatus","OFFLINE");
   }
 }
-async function refresh(){
-  await Promise.allSettled([streamStatus(),signalData(),eventData(),candles()]);
+async function refreshMain(){
+  await Promise.allSettled([signalData(),eventData()]);
 }
-countdown();setInterval(countdown,1000);refresh();setInterval(refresh,2000);window.onresize=()=>latestCandles.length&&draw(latestCandles);
+async function refreshStream(){await streamStatus();}
+countdown();setInterval(countdown,1000);
+refreshMain();setInterval(refreshMain,2000);
+refreshStream();setInterval(refreshStream,5000);
+candles();setInterval(candles,8000);
+window.onresize=()=>latestCandles.length&&draw(latestCandles);
 </script>
 </body>
 </html>
